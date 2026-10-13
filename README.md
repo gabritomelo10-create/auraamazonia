@@ -29,6 +29,17 @@ const CONFIG = {
 
 Os loops em `assets/video/` foram gerados a partir das fotos (zoom lento + transições) por `scripts/make-videos.sh`. Se tiverem filmagens reais (rio, Festa, cozinha), é só substituir `hero.mp4` e `sabor.mp4` (de preferência 1280×720, sem áudio, até uns 3 MB) e os pôsteres `*-poster.jpg`.
 
+## Animações 3D
+
+`assets/js/scene3d.js` (Three.js, em `assets/vendor/`, sem dependência de CDN) cria:
+
+- **A jornada de abertura**, controlada pelo scroll: vista da janela do avião chegando em Manaus, a câmera atravessa a janela, sobrevoa o Teatro Amazonas e desce até o rio para uma viagem de lancha ao pôr do sol, enquanto os textos do Tour passam pela tela. O mouse move o olhar da câmera.
+- **Guaranás 3D** nas bordas da página: o "olho" de cada guaraná segue o cursor, eles desviam quando o mouse chega perto, giram com a velocidade do scroll e entram "pulando" quando aparecem.
+
+Os textos da jornada ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out` indicando em que ponto do scroll aparecem e somem). Sem WebGL ou com movimento reduzido ativado no sistema, a jornada é ocultada e a página abre direto no hero com vídeo.
+
+Por usar módulos JavaScript, para testar localmente é preciso um servidor (`python3 -m http.server`); abrir o arquivo com duplo clique não carrega o 3D.
+
 ## Recursos da página
 
 - Barra de urgência fixa com contagem regressiva, contagem grande no hero, na faixa de vídeo e no fechamento
