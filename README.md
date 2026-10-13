@@ -27,18 +27,19 @@ const CONFIG = {
 
 ## Vídeos
 
-Os loops em `assets/video/` foram gerados a partir das fotos (zoom lento + transições) por `scripts/make-videos.sh`. Se tiverem filmagens reais (rio, Festa, cozinha), é só substituir `hero.mp4` e `sabor.mp4` (de preferência 1280×720, sem áudio, até uns 3 MB) e os pôsteres `*-poster.jpg`.
+`assets/video/floresta.mp4` é um corte de filmagens reais da Aura (rio e floresta). Para trocar por filmagens de Maués, substitua o arquivo e o pôster `floresta-poster.jpg` (de preferência 1280×720, sem áudio, até uns 3 MB).
 
-## Animações 3D
+## Jornada de abertura (fotos reais em camadas)
 
-`assets/js/scene3d.js` (Three.js, em `assets/vendor/`, sem dependência de CDN) cria:
+`assets/js/journey.js` monta a abertura controlada pelo scroll com fotos reais do acervo da Aura Amazônia (`assets/img/aura/`): vista pela janela do avião com névoa passando, a câmera atravessa a janela e desce sobre o rio, segue a lancha, chega à praia do rio e termina à mesa com as cozinheiras e o chamado para a vaga.
 
-- **A jornada de abertura**, controlada pelo scroll: vista da janela do avião chegando em Manaus, a câmera atravessa a janela, sobrevoa o Teatro Amazonas e desce até o rio para uma viagem de lancha ao pôr do sol, enquanto os textos do Tour passam pela tela. O mouse move o olhar da câmera.
-- **Guaranás 3D** nas bordas da página: o "olho" de cada guaraná segue o cursor, eles desviam quando o mouse chega perto, giram com a velocidade do scroll e entram "pulando" quando aparecem.
+- Cada foto tem um mapa de profundidade (`*-depth.png`): perto e longe se deslocam em velocidades diferentes com o scroll, o mouse ou o giroscópio do celular (efeito "foto 3D"). Sem WebGL, as mesmas fotos aparecem em camadas CSS.
+- Os textos ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out` marcando em que ponto do scroll aparecem). As cenas, o zoom e o foco de cada foto ficam no topo de `journey.js` (`SCENES`).
+- Os guaranás flutuantes são recortes da foto `guarana-pe.jpg`.
+- O vídeo `assets/video/floresta.mp4` é um corte do vídeo do site da Aura (floresta e rio).
+- Com "reduzir movimento" ativado no sistema, a jornada é ocultada e a página abre no hero com vídeo.
 
-Os textos da jornada ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out` indicando em que ponto do scroll aparecem e somem). Sem WebGL ou com movimento reduzido ativado no sistema, a jornada é ocultada e a página abre direto no hero com vídeo.
-
-Por usar módulos JavaScript, para testar localmente é preciso um servidor (`python3 -m http.server`); abrir o arquivo com duplo clique não carrega o 3D.
+As fotos do acervo são de experiências da Aura na RDS do Uatumã; a página traz o crédito "Fotos: acervo Aura Amazônia" e não as apresenta como sendo de Maués. Quando houver fotos e vídeos de Maués e da Festa do Guaraná, basta trocar os arquivos mantendo os nomes (e ajustar os mapas de profundidade, se o enquadramento mudar muito).
 
 ## Recursos da página
 

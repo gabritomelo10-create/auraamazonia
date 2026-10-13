@@ -10,25 +10,20 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tour Gastronômico de Maués · Turma única, 22 vagas">
 <meta property="og:description" content="25 a 30 de novembro de 2026. Seis dias na Terra do Guaraná para provar, escutar quem cultiva e viver a Festa do Guaraná. Uma experiência Aura Amazônia.">
-<meta property="og:image" content="assets/img/hero-maues.jpg">
+<meta property="og:image" content="assets/img/aura/aereo-rio.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" type="image/png" href="assets/img/aura-dark.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/video/hero-poster.jpg">
+<link rel="preload" as="image" href="assets/img/aura/aereo-rio.jpg" media="(min-width: 901px)">
+<link rel="preload" as="image" href="assets/img/aura/aereo-rio-m.jpg" media="(max-width: 900px)">
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
   (function () {
     var d = document.documentElement; d.classList.add('js');
-    try {
-      var c = document.createElement('canvas');
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && (c.getContext('webgl2') || c.getContext('webgl'))) {
-        d.classList.add('has-3d');
-        setTimeout(function () { if (!d.classList.contains('is-3d-ready')) d.classList.remove('has-3d'); }, 9000);
-      }
-    } catch (e) {}
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-journey');
   })();
 </script>
 
@@ -77,42 +72,52 @@
 
 <main>
 
-  <!-- JORNADA 3D: avião → Manaus → rio -->
+  <!-- JORNADA: janela do avião → rio → mesa (fotos reais em camadas) -->
   <section class="journey" data-journey aria-label="Viagem até Maués">
     <div class="journey__sticky">
-      <canvas class="journey__canvas" aria-hidden="true"></canvas>
-      <div class="journey__window" data-jwindow aria-hidden="true"><div class="journey__pane"><span class="journey__shade"></span></div></div>
+      <canvas class="journey__gl" aria-hidden="true"></canvas>
+      <div class="journey__scenes" data-jscenes aria-hidden="true"></div>
+      <div class="journey__clouds" aria-hidden="true">
+        <i class="jcloud jcloud--1" data-jcloud></i><i class="jcloud jcloud--2" data-jcloud></i><i class="jcloud jcloud--3" data-jcloud></i>
+      </div>
+      <div class="journey__window" data-jwindow aria-hidden="true"><div class="journey__pane"><span class="journey__shade"></span><span class="journey__glare"></span></div></div>
       <div class="journey__vignette" aria-hidden="true"></div>
+      <div class="journey__fruits" aria-hidden="true">
+        <img class="jfruit jfruit--1" data-jfruit data-depth="1" src="assets/img/aura/guarana-1.png" alt="" width="380" height="380">
+        <img class="jfruit jfruit--2" data-jfruit data-depth="0.55" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290">
+        <img class="jfruit jfruit--3" data-jfruit data-depth="0.3" src="assets/img/aura/guarana-2.png" alt="" width="350" height="265">
+      </div>
 
       <div class="journey__steps">
-        <div class="jstep jstep--wall" data-jstep data-in="0" data-out=".13">
+        <div class="jstep jstep--wall" data-jstep data-in="0" data-out=".12">
           <p class="eyebrow">Voo com destino a Manaus · 25 de novembro</p>
           <img class="jstep__logo" src="assets/img/logo-tour-dark.png" alt="Tour Gastronômico de Maués" width="880" height="460">
           <p class="jstep__big">A origem tem sabor.</p>
           <p class="jstep__txt">Role a página e venha com a gente até a Terra do Guaraná.</p>
         </div>
-        <div class="jstep jstep--wall" data-jstep data-in=".15" data-out=".29">
-          <p class="eyebrow eyebrow--amarelo">Dia 1 · Manaus</p>
+        <div class="jstep jstep--wall" data-jstep data-in=".14" data-out=".26">
+          <p class="eyebrow">Dia 1 · Manaus</p>
           <p class="jstep__big">Pela janela, a Amazônia já se apresenta.</p>
           <p class="jstep__txt">O grupo se encontra em Manaus para o jantar de boas-vindas no Juma Ópera.</p>
         </div>
-        <div class="jstep jstep--right" data-jstep data-in=".40" data-out=".55">
-          <p class="eyebrow eyebrow--amarelo">Teatro Amazonas</p>
-          <p class="jstep__big">O coração de Manaus, ponto de partida da viagem.</p>
+        <div class="jstep jstep--left" data-jstep data-in=".33" data-out=".45">
+          <p class="eyebrow eyebrow--amarelo">Chegando à floresta</p>
+          <p class="jstep__big">Do alto, o rio desenha o caminho.</p>
+          <p class="jstep__txt">Seis dias entre rios, comunidades e cozinhas da Amazônia, com o cuidado da Aura em cada encontro.</p>
         </div>
-        <div class="jstep jstep--left" data-jstep data-in=".60" data-out=".74">
+        <div class="jstep jstep--right" data-jstep data-in=".52" data-out=".64">
           <p class="eyebrow eyebrow--amarelo">Dia 2 · A travessia</p>
-          <p class="jstep__big">Pelos rios da Amazônia até a Terra do Guaraná.</p>
+          <p class="jstep__big">De lancha até a Terra do Guaraná.</p>
           <p class="jstep__txt">Transfer até Itacoatiara e lancha até Maués. A logística é nossa; o seu trabalho é provar e aproveitar.</p>
         </div>
-        <div class="jstep jstep--center" data-jstep data-in=".77" data-out=".88">
+        <div class="jstep jstep--center" data-jstep data-in=".71" data-out=".81">
           <div class="jstep__stats">
             <span><b>6</b> dias</span><span><b>3</b> noites de Festa do Guaraná</span><span><b>22</b> vagas</span><span>Hospedagem e refeições inclusas</span>
           </div>
         </div>
-        <div class="jstep jstep--center jstep--panel" data-jstep data-in=".91" data-out="1">
-          <p class="eyebrow eyebrow--amarelo">Bem-vindo a Maués · 25 a 30 de novembro</p>
-          <p class="jstep__big">Só 22 pessoas vão viver isso.<br><em>Um dos lugares é seu?</em></p>
+        <div class="jstep jstep--final jstep--panel" data-jstep data-in=".88" data-out="1">
+          <p class="eyebrow eyebrow--amarelo">25 a 30 de novembro · Maués</p>
+          <p class="jstep__big">Quem cozinha conta a história.<br><em>Só 22 lugares à mesa.</em></p>
           <p class="jstep__txt">Inscrições até <strong data-deadline-text>20 de outubro</strong> · encerra em <span data-countdown-inline>7d 00h 00m</span></p>
           <div class="jstep__ctas">
             <a href="#vagas" class="btn btn--primary btn--pulse">Garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -123,8 +128,9 @@
 
       <div class="journey__route" aria-hidden="true">
         <div class="journey__route-line"><i data-jroute-fill></i></div>
-        <span data-jstop="0">Manaus</span><span data-jstop=".62">Itacoatiara</span><span data-jstop=".9">Maués</span>
+        <span data-jstop="0">Manaus</span><span data-jstop=".5">Itacoatiara</span><span data-jstop=".86">Maués</span>
       </div>
+      <p class="journey__credit">Fotos: acervo Aura Amazônia</p>
       <div class="journey__hint" data-jhint aria-hidden="true"><span class="journey__mouse"></span>Role para começar a viagem</div>
       <a class="journey__skip" href="#experiencia">Pular a viagem ↓</a>
     </div>
@@ -133,8 +139,8 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero__media" data-parallax="0.1">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/hero-poster.jpg" aria-hidden="true">
-        <source src="assets/video/hero.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/floresta-poster.jpg" aria-hidden="true">
+        <source src="assets/video/floresta.mp4" type="video/mp4">
       </video>
     </div>
     <div class="wrap">
@@ -188,7 +194,8 @@
   </div>
 
   <!-- PALADAR -->
-  <section id="experiencia" class="section" data-guarana="right" data-guarana-y="0">
+  <section id="experiencia" class="section">
+    <img class="floater floater--right" data-floater data-depth="0.8" src="assets/img/aura/guarana-1.png" alt="" width="380" height="380" loading="lazy">
     <div class="wrap split">
       <div class="split__media">
         <div class="media media--tall" data-clip>
@@ -253,8 +260,37 @@
     </div>
   </section>
 
+  <!-- GENTE DE VERDADE -->
+  <section class="section people" aria-labelledby="people-title">
+    <div class="wrap">
+      <div class="people__head">
+        <p class="eyebrow" data-reveal>Gente de verdade</p>
+        <h2 class="h2" id="people-title" data-reveal style="--d:.1s">A Amazônia contada por quem vive nela</h2>
+        <p class="lead" data-reveal style="--d:.2s">Nas experiências da Aura Amazônia, quem conduz são as pessoas do lugar: cozinheiras, guias, produtores e famílias ribeirinhas. É esse jeito de viajar, de perto e com respeito, que levamos para Maués.</p>
+      </div>
+      <div class="people__grid">
+        <div class="people__col" data-parallax="0.05">
+          <figure class="pfig pfig--tall" data-reveal><img src="assets/img/aura/cozinheiras-m.jpg" srcset="assets/img/aura/cozinheiras-m.jpg 900w, assets/img/aura/cozinheiras.jpg 2200w" sizes="(max-width: 860px) 50vw, 33vw" alt="Cozinha comunitária" width="1100" height="825" loading="lazy"><figcaption>Cozinha comunitária</figcaption></figure>
+          <figure class="pfig" data-reveal><img src="assets/img/aura/roda-noite-m.jpg" srcset="assets/img/aura/roda-noite-m.jpg 900w, assets/img/aura/roda-noite.jpg 1200w" sizes="(max-width: 860px) 50vw, 33vw" alt="Roda de histórias à noite" width="900" height="675" loading="lazy"><figcaption>Roda de histórias à noite</figcaption></figure>
+        </div>
+        <div class="people__col people__col--mid" data-parallax="-0.05">
+          <figure class="pfig" data-reveal><img src="assets/img/aura/familia-ribeirinha-m.jpg" srcset="assets/img/aura/familia-ribeirinha-m.jpg 900w, assets/img/aura/familia-ribeirinha.jpg 1200w" sizes="(max-width: 860px) 50vw, 33vw" alt="Família ribeirinha" width="900" height="675" loading="lazy"><figcaption>Família ribeirinha</figcaption></figure>
+          <figure class="pfig" data-reveal><img src="assets/img/aura/mesa-comunidade-m.jpg" srcset="assets/img/aura/mesa-comunidade-m.jpg 900w, assets/img/aura/mesa-comunidade.jpg 1296w" sizes="(max-width: 860px) 50vw, 33vw" alt="À mesa com a comunidade" width="900" height="675" loading="lazy"><figcaption>À mesa com a comunidade</figcaption></figure>
+          <figure class="pfig" data-reveal><img src="assets/img/aura/guia-floresta-m.jpg" srcset="assets/img/aura/guia-floresta-m.jpg 900w, assets/img/aura/guia-floresta.jpg 1200w" sizes="(max-width: 860px) 50vw, 33vw" alt="Guia local apresentando a floresta" width="900" height="675" loading="lazy"><figcaption>Guia local apresentando a floresta</figcaption></figure>
+        </div>
+        <div class="people__col" data-parallax="0.07">
+          <figure class="pfig" data-reveal><img src="assets/img/aura/grupo-trilha-m.jpg" srcset="assets/img/aura/grupo-trilha-m.jpg 900w, assets/img/aura/grupo-trilha.jpg 1800w" sizes="(max-width: 860px) 50vw, 33vw" alt="Grupo em trilha pela floresta" width="1000" height="750" loading="lazy"><figcaption>Grupo em trilha pela floresta</figcaption></figure>
+          <figure class="pfig" data-reveal><img src="assets/img/aura/quelonio-m.jpg" srcset="assets/img/aura/quelonio-m.jpg 900w, assets/img/aura/quelonio.jpg 1280w" sizes="(max-width: 860px) 50vw, 33vw" alt="Filhote de quelônio na soltura comunitária" width="900" height="675" loading="lazy"><figcaption>Filhote de quelônio na soltura comunitária</figcaption></figure>
+          <figure class="pfig" data-reveal><img src="assets/img/aura/conversa-m.jpg" srcset="assets/img/aura/conversa-m.jpg 900w, assets/img/aura/conversa.jpg 1200w" sizes="(max-width: 860px) 50vw, 33vw" alt="Conversa com produtores" width="900" height="675" loading="lazy"><figcaption>Conversa com produtores</figcaption></figure>
+        </div>
+      </div>
+      <p class="people__note" data-reveal>Registros de experiências da Aura Amazônia com comunidades ribeirinhas do Amazonas.</p>
+    </div>
+  </section>
+
   <!-- ROTEIRO -->
-  <section id="roteiro" class="section" data-guarana="left" data-guarana-y="0">
+  <section id="roteiro" class="section">
+    <img class="floater floater--left" data-floater data-depth="0.6" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290" loading="lazy">
     <div class="wrap roteiro">
       <div class="roteiro__intro">
         <p class="eyebrow" data-reveal>25 a 30 de novembro de 2026</p>
@@ -277,8 +313,8 @@
   <!-- FAIXA DE VÍDEO · URGÊNCIA -->
   <section class="vband" aria-label="Prazo de inscrição">
     <div class="vband__media" data-parallax="0.08">
-      <video autoplay muted loop playsinline preload="none" poster="assets/video/sabor-poster.jpg" aria-hidden="true" data-lazy-video>
-        <source data-src="assets/video/sabor.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="none" poster="assets/video/floresta-poster.jpg" aria-hidden="true" data-lazy-video>
+        <source data-src="assets/video/floresta.mp4" type="video/mp4">
       </video>
     </div>
     <div class="wrap">
@@ -296,7 +332,8 @@
   </section>
 
   <!-- KIT -->
-  <section class="section section--areia" data-guarana="left" data-guarana-y="0">
+  <section class="section section--areia">
+    <img class="floater floater--left" data-floater data-depth="0.6" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290" loading="lazy">
     <div class="wrap split split--rev">
       <div class="split__copy">
         <p class="eyebrow" data-reveal>Kit do participante</p>
@@ -318,7 +355,8 @@
   </section>
 
   <!-- POR QUE DECIDIR AGORA -->
-  <section class="section" data-guarana="right" data-guarana-y="0">
+  <section class="section">
+    <img class="floater floater--right" data-floater data-depth="0.8" src="assets/img/aura/guarana-1.png" alt="" width="380" height="380" loading="lazy">
     <div class="wrap">
       <div style="max-width:760px; display:flex; flex-direction:column; gap:18px;">
         <p class="eyebrow" data-reveal>Por que decidir esta semana</p>
@@ -344,6 +382,24 @@
     </div>
   </section>
 
+  <!-- QUEM ESTÁ POR TRÁS -->
+  <section class="section section--areia aura-about">
+    <div class="wrap split">
+      <div class="split__media">
+        <div class="media media--wide" data-clip>
+          <img src="assets/img/aura/premio-braztoa.jpg" alt="Equipe recebendo o Prêmio Braztoa de Sustentabilidade 2024" data-parallax="-0.06" loading="lazy" width="1280" height="853">
+        </div>
+      </div>
+      <div class="split__copy">
+        <p class="eyebrow" data-reveal>Quem está por trás</p>
+        <h2 class="h2" data-reveal style="--d:.1s">Uma experiência Aura Amazônia</h2>
+        <p class="lead" data-reveal style="--d:.2s">A Aura Amazônia é uma startup de inovação socioambiental nascida do turismo comunitário. Desde 2020, desenha experiências imersivas junto com comunidades ribeirinhas, com respeito ao território e a quem vive nele.</p>
+        <p class="lead" data-reveal style="--d:.3s">O Tour Aromático da Amazônia, também da Aura, venceu o <strong>Prêmio Braztoa de Sustentabilidade 2024</strong>, da Associação Brasileira das Operadoras de Turismo.</p>
+        <div class="chips" data-reveal style="--d:.4s"><span class="chip">Turismo comunitário</span><span class="chip">Prêmio Braztoa 2024</span><span class="chip">Desde 2020</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- PARA QUEM É -->
   <section class="forwho">
     <div class="forwho__bg" data-parallax="0.1" aria-hidden="true"></div>
@@ -362,7 +418,8 @@
   </section>
 
   <!-- OFERTA + FORMULÁRIO -->
-  <section id="vagas" class="section section--dark" data-guarana="left" data-guarana-y="0">
+  <section id="vagas" class="section section--dark">
+    <img class="floater floater--left" data-floater data-depth="0.6" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290" loading="lazy">
     <div class="wrap offer">
       <div class="offer__incl on-dark">
         <p class="eyebrow eyebrow--amarelo" data-reveal>O que está incluso</p>
@@ -431,7 +488,8 @@
   </section>
 
   <!-- DÚVIDAS -->
-  <section id="duvidas" class="section" data-guarana="right" data-guarana-y="0">
+  <section id="duvidas" class="section">
+    <img class="floater floater--right" data-floater data-depth="0.8" src="assets/img/aura/guarana-1.png" alt="" width="380" height="380" loading="lazy">
     <div class="wrap faq">
       <div class="faq__head">
         <p class="eyebrow" data-reveal>Dúvidas frequentes</p>
@@ -474,7 +532,8 @@
   </section>
 
   <!-- FECHAMENTO -->
-  <section class="closing" data-guarana="left" data-guarana-y="0">
+  <section class="closing">
+    <img class="floater floater--left" data-floater data-depth="0.6" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290" loading="lazy">
     <div class="closing__grid">
       <div class="closing__copy">
         <h2 class="closing__title" data-reveal>O sabor fica.<br>A viagem transforma.</h2>
@@ -555,6 +614,6 @@
 </div>
 
 <script src="assets/js/main.js" defer></script>
-<script type="module" src="assets/js/scene3d.js"></script>
+<script src="assets/js/journey.js" defer></script>
 </body>
 </html>
