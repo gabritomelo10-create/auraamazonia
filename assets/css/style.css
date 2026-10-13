@@ -505,25 +505,6 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 .journey__gl, .journey__scenes { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .jscene { position: absolute; inset: -4%; background: center / cover no-repeat; will-change: transform, opacity; opacity: 0; }
 
-/* névoa/nuvens em camadas */
-.journey__clouds { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.jcloud { position: absolute; left: -30%; width: 160%; height: 100%; background: center / 100% 100% no-repeat; will-change: transform, opacity; }
-.jcloud--1 { top: 18%; background-image: url("../img/aura/nuvens-1.png"); }
-.jcloud--2 { top: -8%; background-image: url("../img/aura/nuvens-2.png"); }
-.jcloud--3 { top: 30%; background-image: url("../img/aura/nuvens-1.png"); transform: scaleX(-1); }
-
-/* guaranás reais na cena final */
-.journey__fruits { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
-.jfruit { position: absolute; height: auto; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 24px 30px rgba(0,0,0,.45)); }
-.jfruit--1 { width: clamp(120px, 13vw, 210px); right: calc(max(24px, (100vw - var(--wrap)) / 2 + 24px) + min(520px, 40vw) - 90px); bottom: 6vh; }
-.jfruit--2 { width: clamp(80px, 8vw, 130px); right: max(6px, calc((100vw - var(--wrap)) / 2 - 20px)); bottom: 5vh; filter: drop-shadow(0 18px 24px rgba(0,0,0,.4)) blur(.6px); }
-.jfruit--3 { width: clamp(70px, 6.5vw, 110px); right: max(10px, calc((100vw - var(--wrap)) / 2)); top: 17vh; filter: drop-shadow(0 12px 18px rgba(0,0,0,.35)) blur(1.6px); }
-@media (max-width: 860px) {
-  .jfruit--1 { width: 120px; right: auto; left: -18px; bottom: auto; top: 22vh; }
-  .jfruit--2 { width: 82px; right: -10px; bottom: auto; top: 30vh; }
-  .jfruit--3 { width: 64px; right: 28vw; top: 15vh; }
-}
-
 .journey__credit { position: absolute; z-index: 3; right: 20px; bottom: 22px; font-size: 11px; letter-spacing: .06em; color: rgba(243,240,232,.6); }
 .is-cabin .journey__credit { display: none; }
 @media (max-width: 860px) { .journey__credit { bottom: 84px; } }
@@ -656,3 +637,41 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
   .people__col--mid { margin-top: 40px; }
   .pfig figcaption { font-size: 12px; }
 }
+
+/* ==========================================================================
+   Jornada: sequência de quadros da vinheta
+   ========================================================================== */
+.journey__sticky { background: #0f241b url("../seq/d/f000.webp") center / cover no-repeat; }
+@media (max-width: 900px) { .journey__sticky { background-image: url("../seq/m/f000.webp"); } }
+.journey__vignette { background: linear-gradient(0deg, rgba(8,20,15,.6), rgba(8,20,15,0) 38%), linear-gradient(90deg, rgba(8,20,15,.45), rgba(8,20,15,0) 45%); }
+.jstep--intro { bottom: 16vh; }
+.jstep--intro .jstep__logo { width: min(360px, 70vw); }
+.jstep--bottom { left: 50%; bottom: 96px; translate: -50% 0; width: min(860px, calc(100% - 32px)); align-items: center; text-align: center; }
+.jstep--cta { background: linear-gradient(135deg, rgba(16,37,29,.78), rgba(16,37,29,.55)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 20px 26px; border-radius: 24px; gap: 12px; width: min(720px, calc(100% - 32px)); }
+.jstep--cta .jstep__txt { font-size: 16px; }
+@media (max-width: 860px) {
+  .jstep--bottom { bottom: 120px; }
+  .jstep--intro { bottom: 130px; }
+  .jstep--cta { bottom: 104px; padding: 16px; }
+  .jstep--cta .btn { min-height: 48px; font-size: 16px; padding: 10px 18px; }
+}
+.journey__load { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(243,240,232,.12); transition: opacity .6s; }
+.journey__load i { display: block; height: 100%; background: var(--amarelo); transform-origin: left; transform: scaleX(0); transition: transform .3s; }
+.journey__load.is-done { opacity: 0; }
+.journey__hint { color: rgba(243,240,232,.85); }
+
+.jstep--cta { flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px; bottom: 34px; padding: 14px 18px; }
+.jstep--cta .jstep__txt { flex: 1 1 100%; }
+.jstep--cta .jstep__ctas { margin: 0; }
+.journey__route { transition: opacity .4s; }
+.is-final .journey__route { opacity: 0; }
+@media (max-width: 860px) {
+  .jstep--intro .jstep__logo { display: none; }
+  .jstep--intro, .jstep--left, .jstep--right { padding: 18px 20px; }
+  .jstep--cta { bottom: 24px; }
+  .jstep--cta .jstep__txt { font-size: 14px; }
+}
+
+.journey .jstep--cta { max-width: none; width: min(780px, calc(100vw - 32px)); background: linear-gradient(135deg, rgba(16,37,29,.82), rgba(16,37,29,.6)); }
+.journey .jstep--cta .jstep__ctas { flex-wrap: nowrap; }
+@media (max-width: 560px) { .journey .jstep--cta .jstep__ctas { flex-wrap: wrap; } }

@@ -29,17 +29,16 @@ const CONFIG = {
 
 `assets/video/floresta.mp4` é um corte de filmagens reais da Aura (rio e floresta). Para trocar por filmagens de Maués, substitua o arquivo e o pôster `floresta-poster.jpg` (de preferência 1280×720, sem áudio, até uns 3 MB).
 
-## Jornada de abertura (fotos reais em camadas)
+## Jornada de abertura (vinheta 3D controlada pelo scroll)
 
-`assets/js/journey.js` monta a abertura controlada pelo scroll com fotos reais do acervo da Aura Amazônia (`assets/img/aura/`): vista pela janela do avião com névoa passando, a câmera atravessa a janela e desce sobre o rio, segue a lancha, chega à praia do rio e termina à mesa com as cozinheiras e o chamado para a vaga.
+`assets/js/journey.js` transforma a vinheta do Tour em uma sequência de quadros controlada pela rolagem: rolar para baixo avança o voo pelo rio até Maués, a explosão de ingredientes e o logo; rolar para cima volta. Os textos e o botão de vaga aparecem por cima, em momentos definidos.
 
-- Cada foto tem um mapa de profundidade (`*-depth.png`): perto e longe se deslocam em velocidades diferentes com o scroll, o mouse ou o giroscópio do celular (efeito "foto 3D"). Sem WebGL, as mesmas fotos aparecem em camadas CSS.
-- Os textos ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out` marcando em que ponto do scroll aparecem). As cenas, o zoom e o foco de cada foto ficam no topo de `journey.js` (`SCENES`).
-- Os guaranás flutuantes são recortes da foto `guarana-pe.jpg`.
-- O vídeo `assets/video/floresta.mp4` é um corte do vídeo do site da Aura (floresta e rio).
+- Quadros em `assets/seq/d/` (computador, 192 quadros 1600×900) e `assets/seq/m/` (celular, 96 quadros 1024×576), em WebP. Eles carregam aos poucos: primeiro um a cada 8 quadros, depois o resto.
+- O ritmo (quanto de rolagem cada trecho do vídeo ganha) fica em `MAP`, no topo de `journey.js`. Os textos ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out`).
+- Em tela vertical, a partir dos ingredientes a imagem encolhe para o logo caber inteiro.
+- Para trocar a vinheta: exporte os quadros com o ffmpeg nos mesmos tamanhos e nomes (`f000.webp`, `f001.webp`...) e ajuste `COUNT` e `MAP` se a duração mudar:
+  `ffmpeg -i vinheta.mp4 -vf scale=1600:900 -c:v libwebp -quality 72 -start_number 0 assets/seq/d/f%03d.webp`
 - Com "reduzir movimento" ativado no sistema, a jornada é ocultada e a página abre no hero com vídeo.
-
-As fotos do acervo são de experiências da Aura na RDS do Uatumã; a página traz o crédito "Fotos: acervo Aura Amazônia" e não as apresenta como sendo de Maués. Quando houver fotos e vídeos de Maués e da Festa do Guaraná, basta trocar os arquivos mantendo os nomes (e ajustar os mapas de profundidade, se o enquadramento mudar muito).
 
 ## Recursos da página
 

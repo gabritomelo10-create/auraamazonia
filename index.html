@@ -10,15 +10,15 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tour Gastronômico de Maués · Turma única, 22 vagas">
 <meta property="og:description" content="25 a 30 de novembro de 2026. Seis dias na Terra do Guaraná para provar, escutar quem cultiva e viver a Festa do Guaraná. Uma experiência Aura Amazônia.">
-<meta property="og:image" content="assets/img/aura/aereo-rio.jpg">
+<meta property="og:image" content="assets/seq/og.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" type="image/png" href="assets/img/aura-dark.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/img/aura/aereo-rio.jpg" media="(min-width: 901px)">
-<link rel="preload" as="image" href="assets/img/aura/aereo-rio-m.jpg" media="(max-width: 900px)">
+<link rel="preload" as="image" href="assets/seq/d/f000.webp" media="(min-width: 901px)">
+<link rel="preload" as="image" href="assets/seq/m/f000.webp" media="(max-width: 900px)">
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
   (function () {
@@ -72,53 +72,36 @@
 
 <main>
 
-  <!-- JORNADA: janela do avião → rio → mesa (fotos reais em camadas) -->
+  <!-- JORNADA: vinheta 3D do Tour controlada pelo scroll -->
   <section class="journey" data-journey aria-label="Viagem até Maués">
     <div class="journey__sticky">
       <canvas class="journey__gl" aria-hidden="true"></canvas>
-      <div class="journey__scenes" data-jscenes aria-hidden="true"></div>
-      <div class="journey__clouds" aria-hidden="true">
-        <i class="jcloud jcloud--1" data-jcloud></i><i class="jcloud jcloud--2" data-jcloud></i><i class="jcloud jcloud--3" data-jcloud></i>
-      </div>
-      <div class="journey__window" data-jwindow aria-hidden="true"><div class="journey__pane"><span class="journey__shade"></span><span class="journey__glare"></span></div></div>
       <div class="journey__vignette" aria-hidden="true"></div>
-      <div class="journey__fruits" aria-hidden="true">
-        <img class="jfruit jfruit--1" data-jfruit data-depth="1" src="assets/img/aura/guarana-1.png" alt="" width="380" height="380">
-        <img class="jfruit jfruit--2" data-jfruit data-depth="0.55" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290">
-        <img class="jfruit jfruit--3" data-jfruit data-depth="0.3" src="assets/img/aura/guarana-2.png" alt="" width="350" height="265">
-      </div>
 
       <div class="journey__steps">
-        <div class="jstep jstep--wall" data-jstep data-in="0" data-out=".12">
-          <p class="eyebrow">Voo com destino a Manaus · 25 de novembro</p>
-          <img class="jstep__logo" src="assets/img/logo-tour-dark.png" alt="Tour Gastronômico de Maués" width="880" height="460">
+        <div class="jstep jstep--left jstep--intro" data-jstep data-in="0" data-out=".1">
+          <p class="eyebrow eyebrow--amarelo">25 a 30 de novembro de 2026 · Maués, AM</p>
+          <img class="jstep__logo" src="assets/img/logo-tour-light.png" alt="Tour Gastronômico de Maués" width="880" height="460">
           <p class="jstep__big">A origem tem sabor.</p>
-          <p class="jstep__txt">Role a página e venha com a gente até a Terra do Guaraná.</p>
+          <p class="jstep__txt">Role a página e navegue com a gente até a Terra do Guaraná.</p>
         </div>
-        <div class="jstep jstep--wall" data-jstep data-in=".14" data-out=".26">
-          <p class="eyebrow">Dia 1 · Manaus</p>
-          <p class="jstep__big">Pela janela, a Amazônia já se apresenta.</p>
-          <p class="jstep__txt">O grupo se encontra em Manaus para o jantar de boas-vindas no Juma Ópera.</p>
-        </div>
-        <div class="jstep jstep--left" data-jstep data-in=".33" data-out=".45">
-          <p class="eyebrow eyebrow--amarelo">Chegando à floresta</p>
-          <p class="jstep__big">Do alto, o rio desenha o caminho.</p>
-          <p class="jstep__txt">Seis dias entre rios, comunidades e cozinhas da Amazônia, com o cuidado da Aura em cada encontro.</p>
-        </div>
-        <div class="jstep jstep--right" data-jstep data-in=".52" data-out=".64">
+        <div class="jstep jstep--left" data-jstep data-in=".13" data-out=".27">
           <p class="eyebrow eyebrow--amarelo">Dia 2 · A travessia</p>
-          <p class="jstep__big">De lancha até a Terra do Guaraná.</p>
-          <p class="jstep__txt">Transfer até Itacoatiara e lancha até Maués. A logística é nossa; o seu trabalho é provar e aproveitar.</p>
+          <p class="jstep__big">Pelos rios da Amazônia até a Terra do Guaraná.</p>
+          <p class="jstep__txt">Saímos juntos de Manaus: transfer até Itacoatiara e lancha até Maués. A logística é nossa; o seu trabalho é provar e aproveitar.</p>
         </div>
-        <div class="jstep jstep--center" data-jstep data-in=".71" data-out=".81">
+        <div class="jstep jstep--right" data-jstep data-in=".34" data-out=".5">
+          <p class="eyebrow eyebrow--amarelo">Maués</p>
+          <p class="jstep__big">A cidade que dá cor ao guaraná.</p>
+          <p class="jstep__txt">Seis dias para provar, escutar quem cultiva e viver as três noites da Festa do Guaraná.</p>
+        </div>
+        <div class="jstep jstep--bottom" data-jstep data-in=".56" data-out=".74">
           <div class="jstep__stats">
             <span><b>6</b> dias</span><span><b>3</b> noites de Festa do Guaraná</span><span><b>22</b> vagas</span><span>Hospedagem e refeições inclusas</span>
           </div>
         </div>
-        <div class="jstep jstep--final jstep--panel" data-jstep data-in=".88" data-out="1">
-          <p class="eyebrow eyebrow--amarelo">25 a 30 de novembro · Maués</p>
-          <p class="jstep__big">Quem cozinha conta a história.<br><em>Só 22 lugares à mesa.</em></p>
-          <p class="jstep__txt">Inscrições até <strong data-deadline-text>20 de outubro</strong> · encerra em <span data-countdown-inline>7d 00h 00m</span></p>
+        <div class="jstep jstep--bottom jstep--cta" data-jstep data-in=".9" data-out="1">
+          <p class="jstep__txt">25 a 30 de novembro · <strong>só 22 lugares à mesa</strong> · inscrições até <strong data-deadline-text>20 de outubro</strong> · encerra em <span data-countdown-inline>7d 00h 00m</span></p>
           <div class="jstep__ctas">
             <a href="#vagas" class="btn btn--primary btn--pulse">Garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <a href="https://wa.me/555191911504" data-wpp="Olá! Quero saber mais sobre o Tour Gastronômico de Maués." class="btn btn--ghost" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-wpp"/></svg>Falar no WhatsApp</a>
@@ -128,9 +111,9 @@
 
       <div class="journey__route" aria-hidden="true">
         <div class="journey__route-line"><i data-jroute-fill></i></div>
-        <span data-jstop="0">Manaus</span><span data-jstop=".5">Itacoatiara</span><span data-jstop=".86">Maués</span>
+        <span data-jstop="0">Manaus</span><span data-jstop=".18">Itacoatiara</span><span data-jstop=".45">Maués</span>
       </div>
-      <p class="journey__credit">Fotos: acervo Aura Amazônia</p>
+      <div class="journey__load" aria-hidden="true"><i data-jloader></i></div>
       <div class="journey__hint" data-jhint aria-hidden="true"><span class="journey__mouse"></span>Role para começar a viagem</div>
       <a class="journey__skip" href="#experiencia">Pular a viagem ↓</a>
     </div>
