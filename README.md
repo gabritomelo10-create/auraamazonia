@@ -29,16 +29,24 @@ const CONFIG = {
 
 `assets/video/floresta.mp4` é um corte de filmagens reais da Aura (rio e floresta). Para trocar por filmagens de Maués, substitua o arquivo e o pôster `floresta-poster.jpg` (de preferência 1280×720, sem áudio, até uns 3 MB).
 
-## Jornada de abertura (vinheta 3D controlada pelo scroll)
+## Jornada de abertura (vinheta em capítulos)
 
-`assets/js/journey.js` transforma a vinheta do Tour em uma sequência de quadros controlada pela rolagem: rolar para baixo avança o voo pelo rio até Maués, a explosão de ingredientes e o logo; rolar para cima volta. Os textos e o botão de vaga aparecem por cima, em momentos definidos.
+`assets/js/journey.js` divide a vinheta do Tour em capítulos: rio, chegada à cidade, ingredientes e logo. A cada avanço de rolagem, o vídeo toca o próximo trecho sozinho, em velocidade normal e Full HD, desacelera suavemente e para no capítulo seguinte. Se a pessoa rolar vários capítulos de uma vez, o trecho toca mais rápido (até 3×). Ao voltar, o trecho toca de trás para frente a partir de quadros leves.
 
-- Quadros em `assets/seq/d/` (computador, 192 quadros 1600×900) e `assets/seq/m/` (celular, 96 quadros 1024×576), em WebP. Eles carregam aos poucos: primeiro um a cada 8 quadros, depois o resto.
-- O ritmo (quanto de rolagem cada trecho do vídeo ganha) fica em `MAP`, no topo de `journey.js`. Os textos ficam no `index.html` (blocos `data-jstep`, com `data-in`/`data-out`).
-- Em tela vertical, a partir dos ingredientes a imagem encolhe para o logo caber inteiro.
-- Para trocar a vinheta: exporte os quadros com o ffmpeg nos mesmos tamanhos e nomes (`f000.webp`, `f001.webp`...) e ajuste `COUNT` e `MAP` se a duração mudar:
-  `ffmpeg -i vinheta.mp4 -vf scale=1600:900 -c:v libwebp -quality 72 -start_number 0 assets/seq/d/f%03d.webp`
+- Vídeos: `assets/video/vinheta-1080.*` (computador) e `vinheta-720.*` (celular), em WebM (VP9) e MP4 (H.264). O navegador escolhe o formato que suporta.
+- Quadros leves para a volta: `assets/seq/m/` (96 quadros WebP). Pôsteres: `assets/seq/poster*.jpg`.
+- Os capítulos (em que ponto da rolagem começam e em que quadro param) ficam em `CHAPTERS`, no topo de `journey.js`. Os textos ficam no `index.html` (blocos `data-jstep`, com `data-fin`/`data-fout` indicando os quadros em que aparecem).
+- Há pontos de parada suaves na rolagem (scroll snap) e um indicador lateral com os capítulos, que também é clicável.
 - Com "reduzir movimento" ativado no sistema, a jornada é ocultada e a página abre no hero com vídeo.
+
+Para trocar a vinheta, gere os arquivos com os mesmos nomes:
+```
+ffmpeg -i vinheta.mp4 -an -c:v libx264 -crf 20 -g 12 -movflags +faststart assets/video/vinheta-1080.mp4
+ffmpeg -i vinheta.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 33 -g 12 assets/video/vinheta-1080.webm
+ffmpeg -i vinheta.mp4 -an -vf scale=1280:720 -c:v libx264 -crf 22 -g 12 -movflags +faststart assets/video/vinheta-720.mp4
+ffmpeg -i vinheta.mp4 -an -vf scale=1280:720 -c:v libvpx-vp9 -b:v 0 -crf 35 -g 12 assets/video/vinheta-720.webm
+ffmpeg -i vinheta.mp4 -vf "select='not(mod(n\,2))',scale=1024:576" -fps_mode vfr -c:v libwebp -quality 66 -start_number 0 assets/seq/m/f%03d.webp
+```
 
 ## Recursos da página
 
