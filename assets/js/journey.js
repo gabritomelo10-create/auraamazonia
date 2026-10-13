@@ -1,7 +1,8 @@
 /* Tour Gastronômico de Maués · Jornada de abertura
-   A vinheta do Tour é dividida em capítulos. Cada avanço de rolagem leva ao próximo
-   capítulo e o vídeo toca aquele trecho sozinho, suave e em Full HD, até a próxima parada.
-   Para voltar, os quadros leves (assets/seq/m) tocam o trecho de trás para frente. */
+   Cada movimento de rolagem move a vinheta na hora. O vídeo "persegue" a posição da
+   rolagem: para frente, o próprio vídeo toca (Full HD, fluido), mais rápido quando a
+   rolagem é rápida e desacelerando até parar quando ela para. Para trás, quadros leves
+   (assets/seq/m) voltam suavemente. */
 (() => {
   const root = document.documentElement;
   const section = document.querySelector('[data-journey]');
@@ -16,15 +17,22 @@
   const FPS = 24, LAST = 191;
   const MOBILE = innerWidth <= 900 || matchMedia('(pointer: coarse)').matches;
 
-  /* Capítulos: em que ponto da rolagem começam e em que quadro do vídeo param */
-  const CHAPTERS = [
-    { from: 0, frame: 0 },       // abertura: rio parado
-    { from: 0.1, frame: 47 },    // voo rasante pelo rio
-    { from: 0.32, frame: 71 },   // sobe e mostra a cidade
-    { from: 0.54, frame: 104 },  // ingredientes
-    { from: 0.76, frame: LAST }, // logo e chamada final
-  ];
-  const chapterAt = (p) => { let c = 0; CHAPTERS.forEach((ch, i) => { if (p >= ch.from) c = i; }); return c; };
+  /* Ritmo: quanto de rolagem cada trecho ganha (posição da rolagem → quadro do vídeo) */
+  const MAP = [[0, 0], [0.28, 47], [0.48, 71], [0.7, 104], [0.86, 140], [1, LAST]];
+  const frameAt = (p) => {
+    for (let i = 1; i < MAP.length; i++) {
+      if (p <= MAP[i][0]) { const [p0, f0] = MAP[i - 1], [p1, f1] = MAP[i]; return lerp(f0, f1, (p - p0) / (p1 - p0)); }
+    }
+    return LAST;
+  };
+  const progressFor = (f) => {
+    for (let i = 1; i < MAP.length; i++) {
+      if (f <= MAP[i][1]) { const [p0, f0] = MAP[i - 1], [p1, f1] = MAP[i]; return lerp(p0, p1, (f - f0) / (f1 - f0)); }
+    }
+    return 1;
+  };
+  /* Partes da viagem, para o indicador lateral (quadro em que cada uma fica em destaque) */
+  const PARTS = [0, 40, 70, 102, 170];
 
   const canvas = $('canvas');
   const ctx = canvas.getContext('2d');
@@ -34,7 +42,7 @@
   const hint = $('[data-jhint]');
   const dots = $$('[data-jdot]');
 
-  /* ---------- Vídeo (avanço) ---------- */
+  /* ---------- Vídeo (para frente) ---------- */
   const video = document.createElement('video');
   video.muted = true; video.playsInline = true; video.preload = 'auto';
   video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
@@ -43,24 +51,22 @@
   video.load();
   const videoReady = () => video.readyState >= 3;
 
-  /* ---------- Quadros leves (volta e reserva) ---------- */
+  /* ---------- Quadros leves (para trás e enquanto o vídeo carrega) ---------- */
   const SEQ = 96, STEP = 2;
   const seq = new Array(SEQ);
   const order = [];
   for (const gap of [8, 4, 2, 1]) for (let i = 0; i < SEQ; i += gap) if (!order.includes(i)) order.push(i);
-  let nextLoad = 0, dirty = true;
+  let nextLoad = 0;
   const pump = () => {
     if (nextLoad >= order.length) return;
     const i = order[nextLoad++];
     const im = new Image();
     im.decoding = 'async';
-    im.onload = im.onerror = () => { if (im.naturalWidth) seq[i] = im; dirty = true; pump(); };
+    im.onload = im.onerror = () => { if (im.naturalWidth) seq[i] = im; pump(); };
     im.src = `assets/seq/m/f${String(i).padStart(3, '0')}.webp`;
   };
-  // os quadros leves começam a baixar depois que o vídeo pegou embalo
-  setTimeout(() => { for (let k = 0; k < 3; k++) pump(); }, MOBILE ? 1500 : 600);
+  setTimeout(() => { for (let k = 0; k < 3; k++) pump(); }, MOBILE ? 1200 : 500);
   const poster = new Image();
-  poster.onload = () => { dirty = true; };
   poster.src = MOBILE ? 'assets/seq/poster-m.jpg' : 'assets/seq/poster.jpg';
   const seqFrame = (f) => {
     const i = clamp(Math.round(f / STEP), 0, SEQ - 1);
@@ -68,14 +74,13 @@
     return null;
   };
 
-  /* ---------- Desenho em canvas (cobre a tela; na vertical, encolhe para o logo caber) ---------- */
+  /* ---------- Desenho (cobre a tela; na vertical, encolhe para o logo caber) ---------- */
   const BG = 'rgb(17,52,33)', BG0 = 'rgba(17,52,33,0)';
   let dpr = 1;
   const resize = () => {
     dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(canvas.clientWidth * dpr);
     canvas.height = Math.round(canvas.clientHeight * dpr);
-    dirty = true;
   };
   const look = { x: 0, y: 0, tx: 0, ty: 0 };
 
@@ -106,7 +111,7 @@
     return true;
   }
 
-  /* ---------- Textos por quadro: aparecem quando o vídeo chega naquele trecho ---------- */
+  /* ---------- Textos por quadro ---------- */
   function overlay(f) {
     steps.forEach((el) => {
       const a = +el.dataset.fin, b = +el.dataset.fout;
@@ -120,70 +125,61 @@
     if (routeFill) routeFill.style.transform = `scaleX(${clamp(f / 71, 0, 1)})`;
     stops.forEach((s) => s.classList.toggle('is-on', f >= +s.dataset.jstop));
     section.classList.toggle('is-final', f > 150);
+    let part = 0; PARTS.forEach((pf, i) => { if (f >= pf - 4) part = i; });
+    dots.forEach((d, i) => d.classList.toggle('is-on', i === part));
   }
 
-  /* ---------- Controle: vai até o quadro do capítulo atual ---------- */
-  let disp = 0;           // quadro mostrado
-  let target = 0;         // quadro do capítulo
-  let mode = 'idle';      // 'video' (avançando) | 'seq' (voltando ou sem vídeo) | 'idle'
-  let showVideo = false;  // o último quadro desenhado veio do vídeo?
-
-  function startForward() {
-    if (!videoReady()) { mode = 'seq'; return; }
-    const t = disp / FPS;
-    if (Math.abs(video.currentTime - t) > 0.06) video.currentTime = t;
-    mode = 'video';
-    const p = video.play();
-    if (p && p.catch) p.catch(() => { mode = 'seq'; });
-  }
+  /* ---------- Perseguição: o vídeo vai atrás da rolagem ---------- */
+  let disp = 0;            // quadro mostrado
+  let fromVideo = false;   // o quadro mostrado veio do vídeo?
+  let rate = 1;
 
   function update(dt) {
-    const want = CHAPTERS[chapterAt(progress())].frame;
-    if (want !== target) {
-      target = want;
-      if (target > disp + 0.5) startForward();
-      else if (target < disp - 0.5) { if (!video.paused) video.pause(); mode = 'seq'; showVideo = false; }
-    }
-    const remaining = target - disp;
-    if (mode === 'video') {
-      if (video.seeking) return;
-      // trechos longos (rolou vários capítulos de uma vez) tocam mais rápido;
-      // nos últimos quadros antes da parada, o vídeo desacelera
-      const rate = clamp(Math.abs(remaining) / (FPS * 2.4), 1, 3);
-      const ease = remaining < 10 ? lerp(0.55, 1, remaining / 10) : 1;
-      const r = clamp(rate * ease, 0.5, 3);
-      if (Math.abs(video.playbackRate - r) > 0.05) video.playbackRate = r;
-      const vf = video.currentTime * FPS;
-      if (vf >= disp - 1) { disp = Math.max(disp, vf); showVideo = true; }
-      if (disp >= target - 0.25 || video.ended) {
-        video.pause();
-        disp = target; mode = 'idle';
+    const target = frameAt(progress());
+    const gap = target - disp;
+
+    if (gap > 0.8 && videoReady()) {
+      // para frente: o vídeo toca, com velocidade proporcional à distância (alcança em ~0,4 s)
+      if (video.paused) {
+        if (!fromVideo || Math.abs(video.currentTime * FPS - disp) > 1.5) video.currentTime = disp / FPS;
+        const p = video.play();
+        if (p && p.catch) p.catch(() => {});
       }
-    } else if (mode === 'seq') {
-      const dist = Math.abs(remaining);
-      if (dist < 0.3) { disp = target; mode = 'idle'; return; }
-      const speed = Math.max(FPS * 0.8, Math.min(FPS * 3, dist * 3.2));
-      disp += Math.sign(remaining) * Math.min(dist, speed * dt);
-      showVideo = false;
-      dirty = true;
-      if (remaining > 0 && videoReady() && dist > 6) startForward(); // vídeo ficou pronto: assume o avanço
+      const want = clamp(gap / (FPS * 0.4), 0.3, 4);
+      rate += (want - rate) * Math.min(1, dt * 8);
+      if (Math.abs(video.playbackRate - rate) > 0.04) video.playbackRate = rate;
+      if (!video.seeking) {
+        const vf = video.currentTime * FPS;
+        if (vf >= disp - 1) { disp = Math.min(Math.max(disp, vf), LAST); fromVideo = true; }
+      }
+      return;
+    }
+
+    if (!video.paused) { video.pause(); rate = 1; }
+
+    if (gap > 0.8) {
+      // vídeo ainda carregando: avança pelos quadros leves
+      disp += gap * Math.min(1, dt * 6);
+      fromVideo = false;
+    } else if (gap < -0.8) {
+      // para trás: volta suave pelos quadros leves
+      disp += gap * Math.min(1, dt * 7);
+      fromVideo = false;
     }
   }
 
   function render() {
     let ok = false;
-    if (showVideo && video.readyState >= 2 && !video.seeking) ok = paint(video, disp);
+    if (fromVideo && video.readyState >= 2 && !video.seeking) ok = paint(video, disp);
     if (!ok) {
       const im = (disp < 1 && poster.naturalWidth) ? poster : (seqFrame(disp) || (poster.naturalWidth ? poster : null));
       if (im) paint(im, disp);
     }
     overlay(disp);
-    if (hint) hint.style.opacity = String(1 - clamp(progress() / 0.04, 0, 1));
-    const c = chapterAt(progress());
-    dots.forEach((d, i) => d.classList.toggle('is-on', i === c));
+    if (hint) hint.style.opacity = String(1 - clamp(progress() / 0.03, 0, 1));
   }
 
-  /* ---------- Mouse / giroscópio: leve profundidade ---------- */
+  /* ---------- Mouse / giroscópio ---------- */
   addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;
     look.tx = (e.clientX / innerWidth) * 2 - 1;
@@ -195,21 +191,10 @@
     look.ty = clamp((e.beta - 45) / 30, -1, 1);
   }, { passive: true });
 
-  /* ---------- Pontos de parada da rolagem (um por capítulo) ---------- */
-  const snaps = $('[data-jsnaps]');
-  if (snaps) {
-    CHAPTERS.forEach((ch) => {
-      const s = document.createElement('div');
-      s.className = 'journey__snap';
-      s.style.top = `calc((100% - 100vh) * ${ch.from ? ch.from + 0.03 : 0})`;
-      snaps.appendChild(s);
-    });
-  }
-
+  /* Indicador lateral: clicar leva àquela parte da viagem */
   dots.forEach((d, i) => d.addEventListener('click', () => {
     const top = section.getBoundingClientRect().top + scrollY;
-    const from = CHAPTERS[i].from ? CHAPTERS[i].from + 0.03 : 0;
-    scrollTo({ top: top + (section.offsetHeight - innerHeight) * from, behavior: 'smooth' });
+    scrollTo({ top: top + (section.offsetHeight - innerHeight) * progressFor(PARTS[i] + (i ? 4 : 0)), behavior: 'smooth' });
   }));
 
   /* ---------- Loop ---------- */
@@ -232,8 +217,7 @@
   resize();
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); }, { rootMargin: '120px 0px' }).observe(section);
 
-  // quem recarrega a página já rolada vê direto o capítulo certo
-  disp = target = CHAPTERS[chapterAt(progress())].frame;
+  disp = frameAt(progress()); // quem recarrega a página já rolada vê o ponto certo
   start();
   root.classList.add('is-journey-ready');
 })();
