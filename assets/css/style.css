@@ -641,8 +641,8 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 /* ==========================================================================
    Jornada: sequência de quadros da vinheta
    ========================================================================== */
-.journey__sticky { background: #0f241b url("../seq/d/f000.webp") center / cover no-repeat; }
-@media (max-width: 900px) { .journey__sticky { background-image: url("../seq/m/f000.webp"); } }
+.journey__sticky { background: #0f241b url("../seq/poster.jpg") center / cover no-repeat; }
+@media (max-width: 900px) { .journey__sticky { background-image: url("../seq/poster-m.jpg"); } }
 .journey__vignette { background: linear-gradient(0deg, rgba(8,20,15,.6), rgba(8,20,15,0) 38%), linear-gradient(90deg, rgba(8,20,15,.45), rgba(8,20,15,0) 45%); }
 .jstep--intro { bottom: 16vh; }
 .jstep--intro .jstep__logo { width: min(360px, 70vw); }
@@ -675,3 +675,12 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 .journey .jstep--cta { max-width: none; width: min(780px, calc(100vw - 32px)); background: linear-gradient(135deg, rgba(16,37,29,.82), rgba(16,37,29,.6)); }
 .journey .jstep--cta .jstep__ctas { flex-wrap: nowrap; }
 @media (max-width: 560px) { .journey .jstep--cta .jstep__ctas { flex-wrap: wrap; } }
+
+/* capítulos da jornada: pontos de parada da rolagem e indicador lateral */
+html { scroll-snap-type: y proximity; }
+.journey__snaps { position: absolute; inset: 0; pointer-events: none; }
+.journey__snap { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; scroll-snap-stop: normal; margin-top: 120px; }
+.journey__dots { position: absolute; z-index: 4; right: 22px; top: 50%; translate: 0 -50%; display: flex; flex-direction: column; gap: 12px; }
+.journey__dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; border: 1.5px solid rgba(243,240,232,.7); background: transparent; cursor: pointer; transition: height .35s var(--ease), background .3s; }
+.journey__dots button.is-on { height: 28px; background: var(--amarelo); border-color: var(--amarelo); }
+@media (max-width: 860px) { .journey__dots { right: 10px; gap: 9px; } .journey__dots button { width: 8px; height: 8px; } .journey__dots button.is-on { height: 22px; } }
