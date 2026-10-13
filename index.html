@@ -19,7 +19,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/video/hero-poster.jpg">
 <link rel="stylesheet" href="assets/css/style.css">
-<script>document.documentElement.classList.add('js')</script>
+<script>
+  (function () {
+    var d = document.documentElement; d.classList.add('js');
+    try {
+      var c = document.createElement('canvas');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && (c.getContext('webgl2') || c.getContext('webgl'))) {
+        d.classList.add('has-3d');
+        setTimeout(function () { if (!d.classList.contains('is-3d-ready')) d.classList.remove('has-3d'); }, 9000);
+      }
+    } catch (e) {}
+  })();
+</script>
 
 <!-- Pixel da Meta / Google Analytics: cole os scripts aqui.
      O formulário já dispara fbq('track','Lead') e gtag('event','generate_lead') quando eles existem. -->
@@ -65,6 +76,59 @@
 </header>
 
 <main>
+
+  <!-- JORNADA 3D: avião → Manaus → rio -->
+  <section class="journey" data-journey aria-label="Viagem até Maués">
+    <div class="journey__sticky">
+      <canvas class="journey__canvas" aria-hidden="true"></canvas>
+      <div class="journey__window" data-jwindow aria-hidden="true"><div class="journey__pane"><span class="journey__shade"></span></div></div>
+      <div class="journey__vignette" aria-hidden="true"></div>
+
+      <div class="journey__steps">
+        <div class="jstep jstep--wall" data-jstep data-in="0" data-out=".13">
+          <p class="eyebrow">Voo com destino a Manaus · 25 de novembro</p>
+          <img class="jstep__logo" src="assets/img/logo-tour-dark.png" alt="Tour Gastronômico de Maués" width="880" height="460">
+          <p class="jstep__big">A origem tem sabor.</p>
+          <p class="jstep__txt">Role a página e venha com a gente até a Terra do Guaraná.</p>
+        </div>
+        <div class="jstep jstep--wall" data-jstep data-in=".15" data-out=".29">
+          <p class="eyebrow eyebrow--amarelo">Dia 1 · Manaus</p>
+          <p class="jstep__big">Pela janela, a Amazônia já se apresenta.</p>
+          <p class="jstep__txt">O grupo se encontra em Manaus para o jantar de boas-vindas no Juma Ópera.</p>
+        </div>
+        <div class="jstep jstep--right" data-jstep data-in=".40" data-out=".55">
+          <p class="eyebrow eyebrow--amarelo">Teatro Amazonas</p>
+          <p class="jstep__big">O coração de Manaus, ponto de partida da viagem.</p>
+        </div>
+        <div class="jstep jstep--left" data-jstep data-in=".60" data-out=".74">
+          <p class="eyebrow eyebrow--amarelo">Dia 2 · A travessia</p>
+          <p class="jstep__big">Pelos rios da Amazônia até a Terra do Guaraná.</p>
+          <p class="jstep__txt">Transfer até Itacoatiara e lancha até Maués. A logística é nossa; o seu trabalho é provar e aproveitar.</p>
+        </div>
+        <div class="jstep jstep--center" data-jstep data-in=".77" data-out=".88">
+          <div class="jstep__stats">
+            <span><b>6</b> dias</span><span><b>3</b> noites de Festa do Guaraná</span><span><b>22</b> vagas</span><span>Hospedagem e refeições inclusas</span>
+          </div>
+        </div>
+        <div class="jstep jstep--center jstep--panel" data-jstep data-in=".91" data-out="1">
+          <p class="eyebrow eyebrow--amarelo">Bem-vindo a Maués · 25 a 30 de novembro</p>
+          <p class="jstep__big">Só 22 pessoas vão viver isso.<br><em>Um dos lugares é seu?</em></p>
+          <p class="jstep__txt">Inscrições até <strong data-deadline-text>20 de outubro</strong> · encerra em <span data-countdown-inline>7d 00h 00m</span></p>
+          <div class="jstep__ctas">
+            <a href="#vagas" class="btn btn--primary btn--pulse">Garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a href="https://wa.me/555191911504" data-wpp="Olá! Quero saber mais sobre o Tour Gastronômico de Maués." class="btn btn--ghost" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-wpp"/></svg>Falar no WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey__route" aria-hidden="true">
+        <div class="journey__route-line"><i data-jroute-fill></i></div>
+        <span data-jstop="0">Manaus</span><span data-jstop=".62">Itacoatiara</span><span data-jstop=".9">Maués</span>
+      </div>
+      <div class="journey__hint" data-jhint aria-hidden="true"><span class="journey__mouse"></span>Role para começar a viagem</div>
+      <a class="journey__skip" href="#experiencia">Pular a viagem ↓</a>
+    </div>
+  </section>
 
   <!-- HERO -->
   <section class="hero">
@@ -124,7 +188,7 @@
   </div>
 
   <!-- PALADAR -->
-  <section id="experiencia" class="section">
+  <section id="experiencia" class="section" data-guarana="right" data-guarana-y="0">
     <div class="wrap split">
       <div class="split__media">
         <div class="media media--tall" data-clip>
@@ -190,7 +254,7 @@
   </section>
 
   <!-- ROTEIRO -->
-  <section id="roteiro" class="section">
+  <section id="roteiro" class="section" data-guarana="left" data-guarana-y="0">
     <div class="wrap roteiro">
       <div class="roteiro__intro">
         <p class="eyebrow" data-reveal>25 a 30 de novembro de 2026</p>
@@ -232,7 +296,7 @@
   </section>
 
   <!-- KIT -->
-  <section class="section section--areia">
+  <section class="section section--areia" data-guarana="left" data-guarana-y="0">
     <div class="wrap split split--rev">
       <div class="split__copy">
         <p class="eyebrow" data-reveal>Kit do participante</p>
@@ -254,7 +318,7 @@
   </section>
 
   <!-- POR QUE DECIDIR AGORA -->
-  <section class="section">
+  <section class="section" data-guarana="right" data-guarana-y="0">
     <div class="wrap">
       <div style="max-width:760px; display:flex; flex-direction:column; gap:18px;">
         <p class="eyebrow" data-reveal>Por que decidir esta semana</p>
@@ -298,7 +362,7 @@
   </section>
 
   <!-- OFERTA + FORMULÁRIO -->
-  <section id="vagas" class="section section--dark">
+  <section id="vagas" class="section section--dark" data-guarana="left" data-guarana-y="0">
     <div class="wrap offer">
       <div class="offer__incl on-dark">
         <p class="eyebrow eyebrow--amarelo" data-reveal>O que está incluso</p>
@@ -367,7 +431,7 @@
   </section>
 
   <!-- DÚVIDAS -->
-  <section id="duvidas" class="section">
+  <section id="duvidas" class="section" data-guarana="right" data-guarana-y="0">
     <div class="wrap faq">
       <div class="faq__head">
         <p class="eyebrow" data-reveal>Dúvidas frequentes</p>
@@ -410,7 +474,7 @@
   </section>
 
   <!-- FECHAMENTO -->
-  <section class="closing">
+  <section class="closing" data-guarana="left" data-guarana-y="0">
     <div class="closing__grid">
       <div class="closing__copy">
         <h2 class="closing__title" data-reveal>O sabor fica.<br>A viagem transforma.</h2>
@@ -491,5 +555,6 @@
 </div>
 
 <script src="assets/js/main.js" defer></script>
+<script type="module" src="assets/js/scene3d.js"></script>
 </body>
 </html>
