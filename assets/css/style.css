@@ -497,10 +497,10 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 /* ==========================================================================
    Jornada 3D (avião → Manaus → rio)
    ========================================================================== */
-.journey { display: none; position: relative; height: 560vh; background: #10251d; color: var(--creme); }
+.journey { display: none; position: relative; height: 420vh; background: #10251d; color: var(--creme); }
 .has-journey .journey { display: block; }
 .has-journey .hero { padding-top: 96px; }
-@media (max-width: 860px) { .journey { height: 480vh; } }
+@media (max-width: 860px) { .journey { height: 380vh; } }
 .journey__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .journey__gl, .journey__scenes { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .jscene { position: absolute; inset: -4%; background: center / cover no-repeat; will-change: transform, opacity; opacity: 0; }
@@ -677,9 +677,6 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 @media (max-width: 560px) { .journey .jstep--cta .jstep__ctas { flex-wrap: wrap; } }
 
 /* capítulos da jornada: pontos de parada da rolagem e indicador lateral */
-html { scroll-snap-type: y proximity; }
-.journey__snaps { position: absolute; inset: 0; pointer-events: none; }
-.journey__snap { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; scroll-snap-stop: normal; margin-top: 120px; }
 .journey__dots { position: absolute; z-index: 4; right: 22px; top: 50%; translate: 0 -50%; display: flex; flex-direction: column; gap: 12px; }
 .journey__dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; border: 1.5px solid rgba(243,240,232,.7); background: transparent; cursor: pointer; transition: height .35s var(--ease), background .3s; }
 .journey__dots button.is-on { height: 28px; background: var(--amarelo); border-color: var(--amarelo); }

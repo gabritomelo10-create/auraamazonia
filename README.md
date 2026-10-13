@@ -29,14 +29,14 @@ const CONFIG = {
 
 `assets/video/floresta.mp4` é um corte de filmagens reais da Aura (rio e floresta). Para trocar por filmagens de Maués, substitua o arquivo e o pôster `floresta-poster.jpg` (de preferência 1280×720, sem áudio, até uns 3 MB).
 
-## Jornada de abertura (vinheta em capítulos)
+## Jornada de abertura (vinheta que acompanha a rolagem)
 
-`assets/js/journey.js` divide a vinheta do Tour em capítulos: rio, chegada à cidade, ingredientes e logo. A cada avanço de rolagem, o vídeo toca o próximo trecho sozinho, em velocidade normal e Full HD, desacelera suavemente e para no capítulo seguinte. Se a pessoa rolar vários capítulos de uma vez, o trecho toca mais rápido (até 3×). Ao voltar, o trecho toca de trás para frente a partir de quadros leves.
+`assets/js/journey.js` faz a vinheta do Tour acompanhar a rolagem: cada movimento move o vídeo na hora. Para frente, o próprio vídeo toca em Full HD, mais rápido quando a rolagem é rápida (até 4×) e desacelerando até parar quando a rolagem para. Para trás, quadros leves voltam suavemente.
 
 - Vídeos: `assets/video/vinheta-1080.*` (computador) e `vinheta-720.*` (celular), em WebM (VP9) e MP4 (H.264). O navegador escolhe o formato que suporta.
 - Quadros leves para a volta: `assets/seq/m/` (96 quadros WebP). Pôsteres: `assets/seq/poster*.jpg`.
-- Os capítulos (em que ponto da rolagem começam e em que quadro param) ficam em `CHAPTERS`, no topo de `journey.js`. Os textos ficam no `index.html` (blocos `data-jstep`, com `data-fin`/`data-fout` indicando os quadros em que aparecem).
-- Há pontos de parada suaves na rolagem (scroll snap) e um indicador lateral com os capítulos, que também é clicável.
+- O ritmo (quanto de rolagem cada trecho ganha) fica em `MAP`, no topo de `journey.js`. Os textos ficam no `index.html` (blocos `data-jstep`, com `data-fin`/`data-fout` indicando os quadros em que aparecem).
+- O indicador lateral mostra em que parte da viagem a pessoa está; clicar nele leva àquela parte.
 - Com "reduzir movimento" ativado no sistema, a jornada é ocultada e a página abre no hero com vídeo.
 
 Para trocar a vinheta, gere os arquivos com os mesmos nomes:
