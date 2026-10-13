@@ -159,6 +159,8 @@ const CONFIG = {
   const progress = $('.progress');
   const header = $('.header');
   const parallax = $$('[data-parallax]');
+  const floaters = $$('[data-floater]');
+  const mouse = { x: 0, y: 0 };
   const timeline = $('[data-timeline]');
   const tItems = timeline ? $$('li', timeline) : [];
   const mobileBar = $('[data-mobile-bar]');
@@ -180,6 +182,17 @@ const CONFIG = {
         if (r.bottom < -200 || r.top > vh + 200) return;
         const p = clamp((r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2), -1, 1);
         el.style.setProperty('--py', `${(-p * parseFloat(el.dataset.parallax) * r.height).toFixed(1)}px`);
+      });
+    }
+
+    if (!reduced) {
+      // guaranás reais: sobem em velocidade própria, inclinam e seguem levemente o mouse
+      floaters.forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -300 || r.top > vh + 300) return;
+        const d = parseFloat(el.dataset.depth || '0.6');
+        const c = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.transform = `translate3d(${(mouse.x * 18 * d).toFixed(1)}px, ${(c * -120 * d + mouse.y * 12 * d).toFixed(1)}px, 0) rotate(${(c * 24 * (i % 2 ? -1 : 1) + mouse.x * 6).toFixed(1)}deg)`;
       });
     }
 
@@ -212,6 +225,12 @@ const CONFIG = {
     requestAnimationFrame(() => { onScroll(); ticking = false; });
   };
   addEventListener('scroll', requestTick, { passive: true });
+  addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
+    mouse.x = (e.clientX / innerWidth) * 2 - 1;
+    mouse.y = (e.clientY / innerHeight) * 2 - 1;
+    requestTick();
+  }, { passive: true });
   addEventListener('resize', () => { setupHs(); requestTick(); });
   addEventListener('load', () => { setupHs(); requestTick(); });
   setupHs();

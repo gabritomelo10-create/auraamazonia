@@ -498,11 +498,35 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
    Jornada 3D (avião → Manaus → rio)
    ========================================================================== */
 .journey { display: none; position: relative; height: 560vh; background: #10251d; color: var(--creme); }
-.has-3d .journey { display: block; }
-.has-3d .hero { padding-top: 96px; }
+.has-journey .journey { display: block; }
+.has-journey .hero { padding-top: 96px; }
 @media (max-width: 860px) { .journey { height: 480vh; } }
 .journey__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-.journey__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.journey__gl, .journey__scenes { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.jscene { position: absolute; inset: -4%; background: center / cover no-repeat; will-change: transform, opacity; opacity: 0; }
+
+/* névoa/nuvens em camadas */
+.journey__clouds { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.jcloud { position: absolute; left: -30%; width: 160%; height: 100%; background: center / 100% 100% no-repeat; will-change: transform, opacity; }
+.jcloud--1 { top: 18%; background-image: url("../img/aura/nuvens-1.png"); }
+.jcloud--2 { top: -8%; background-image: url("../img/aura/nuvens-2.png"); }
+.jcloud--3 { top: 30%; background-image: url("../img/aura/nuvens-1.png"); transform: scaleX(-1); }
+
+/* guaranás reais na cena final */
+.journey__fruits { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.jfruit { position: absolute; height: auto; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 24px 30px rgba(0,0,0,.45)); }
+.jfruit--1 { width: clamp(120px, 13vw, 210px); right: calc(max(24px, (100vw - var(--wrap)) / 2 + 24px) + min(520px, 40vw) - 90px); bottom: 6vh; }
+.jfruit--2 { width: clamp(80px, 8vw, 130px); right: max(6px, calc((100vw - var(--wrap)) / 2 - 20px)); bottom: 5vh; filter: drop-shadow(0 18px 24px rgba(0,0,0,.4)) blur(.6px); }
+.jfruit--3 { width: clamp(70px, 6.5vw, 110px); right: max(10px, calc((100vw - var(--wrap)) / 2)); top: 17vh; filter: drop-shadow(0 12px 18px rgba(0,0,0,.35)) blur(1.6px); }
+@media (max-width: 860px) {
+  .jfruit--1 { width: 120px; right: auto; left: -18px; bottom: auto; top: 22vh; }
+  .jfruit--2 { width: 82px; right: -10px; bottom: auto; top: 30vh; }
+  .jfruit--3 { width: 64px; right: 28vw; top: 15vh; }
+}
+
+.journey__credit { position: absolute; z-index: 3; right: 20px; bottom: 22px; font-size: 11px; letter-spacing: .06em; color: rgba(243,240,232,.6); }
+.is-cabin .journey__credit { display: none; }
+@media (max-width: 860px) { .journey__credit { bottom: 84px; } }
 
 /* janela do avião */
 .journey__window { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1; will-change: transform, opacity; transform-origin: 50% 50%; }
@@ -517,6 +541,7 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
     inset 0 0 0 6px rgba(0,0,0,.18), inset 0 18px 50px rgba(0,0,0,.4), inset 0 -10px 40px rgba(255,255,255,.12);
   overflow: hidden;
 }
+.journey__glare { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.08) 74%, rgba(255,255,255,0) 80%); mix-blend-mode: screen; }
 .journey__shade { position: absolute; left: 0; right: 0; top: 0; height: 13%; background: linear-gradient(#f2efe9, #dcd7ce); box-shadow: 0 3px 10px rgba(0,0,0,.25); }
 .journey__shade::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 34px; height: 6px; margin-left: -17px; border-radius: 6px; background: #bdb6aa; }
 
@@ -531,16 +556,20 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 }
 .jstep.is-active { pointer-events: auto; }
 .jstep--left, .jstep--right { background: linear-gradient(135deg, rgba(16,37,29,.62), rgba(16,37,29,.35)); padding: 26px 28px; border-radius: 22px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-.jstep--panel { background: radial-gradient(ellipse at center, rgba(16,37,29,.62), rgba(16,37,29,.38) 70%, rgba(16,37,29,0)); padding: 34px 40px; border-radius: 32px; }
+.jstep--panel { background: linear-gradient(135deg, rgba(16,37,29,.78), rgba(16,37,29,.55)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 32px 34px; border-radius: 26px; }
+.jstep--panel .jstep__ctas { justify-content: flex-start; }
 .jstep--wall { color: var(--verde-escuro); text-shadow: none; left: 6vw; top: 50%; translate: 0 -50%; max-width: min(30vw, 440px); }
 .jstep--wall .jstep__txt { color: var(--texto); }
 .jstep--wall .jstep__logo { width: min(360px, 100%); filter: none; }
 @media (max-width: 999px) {
-  .journey__pane { width: 66vw; height: 42vh; margin-top: -26vh; }
+  .journey__pane { width: 62vw; height: 34vh; margin-top: -38vh; }
   .jstep--wall { left: 20px; right: 20px; top: auto; bottom: 150px; translate: none; max-width: none; gap: 10px; }
-  .jstep--wall .jstep__logo { width: min(240px, 60vw); }
+  .jstep--wall .jstep__logo { width: min(180px, 50vw); }
+  .jstep--wall .eyebrow { font-size: 11px; }
   .jstep--wall .jstep__big { font-size: clamp(26px, 7vw, 40px); }
 }
+.jstep--final { right: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); top: 50%; translate: 0 -50%; max-width: 520px; }
+@media (max-width: 860px) { .jstep--final { left: 16px; right: 16px; top: auto; bottom: 110px; translate: none; max-width: none; } }
 .jstep--center { left: 50%; top: 50%; translate: -50% -50%; align-items: center; text-align: center; width: min(760px, calc(100% - 32px)); max-width: none; }
 .jstep--left { left: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); bottom: 18vh; }
 .jstep--right { right: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); top: 22vh; text-align: right; align-items: flex-end; }
@@ -592,6 +621,38 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 }
 .journey__skip:hover { color: var(--verde-escuro); background: #fff; }
 
-/* camada dos guaranás 3D */
-.guarana-layer { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
-.has-3d .header { background: rgba(21,61,50,.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.has-journey .header { background: rgba(21,61,50,.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* ==========================================================================
+   Guaranás reais nas divisas das seções
+   ========================================================================== */
+.floater { position: absolute; top: 0; z-index: 4; height: auto; pointer-events: none; width: clamp(84px, 9vw, 150px); translate: 0 -50%; will-change: transform; filter: drop-shadow(0 20px 26px rgba(0,0,0,.32)); }
+.floater--right { right: max(-18px, calc((100vw - var(--wrap)) / 2 - 70px)); }
+.floater--left { left: max(-18px, calc((100vw - var(--wrap)) / 2 - 70px)); width: clamp(70px, 7vw, 120px); }
+@media (max-width: 860px) { .floater { width: 74px; } .floater--right { right: -16px; } .floater--left { left: -14px; width: 62px; } }
+.closing, .stats, .forwho { position: relative; }
+
+/* ==========================================================================
+   Gente de verdade
+   ========================================================================== */
+.people { overflow: hidden; }
+.people__head { max-width: 760px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 56px; }
+.people__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: start; }
+.people__col { display: flex; flex-direction: column; gap: 22px; transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+.people__col--mid { margin-top: 80px; }
+.pfig { margin: 0; position: relative; border-radius: 18px; overflow: hidden; background: var(--areia); }
+.pfig img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 1.2s var(--ease); }
+.pfig--tall img { aspect-ratio: 4 / 5; }
+.pfig:hover img { transform: scale(1.05); }
+.pfig figcaption { position: absolute; left: 12px; bottom: 12px; right: 12px; color: #fff; font-size: 14px; font-weight: 600; text-shadow: 0 1px 12px rgba(0,0,0,.7); }
+.pfig::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.5)); pointer-events: none; }
+.pfig figcaption { z-index: 1; }
+.people__note { margin-top: 28px; font-size: 13px; color: var(--texto-suave); }
+@media (max-width: 860px) {
+  .people__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .people__col { gap: 12px; }
+  .people__col:nth-child(3) { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
+  .people__col:nth-child(3) .pfig:first-child { grid-column: 1 / -1; }
+  .people__col--mid { margin-top: 40px; }
+  .pfig figcaption { font-size: 12px; }
+}
