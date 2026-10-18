@@ -15,12 +15,12 @@ const CONFIG = {
   whatsapp: '555191911504',                 // número que recebe os contatos
   deadline: '2026-11-05T23:59:59-04:00',    // fim das inscrições (horário de Manaus)
   vagasTotal: 22,
-  vagasRestantes: 22,                       // atualize conforme vender
+  vagasRestantes: 20,                       // atualize conforme vender
   leadEndpoint: '',                         // opcional: URL que recebe os leads em JSON
 };
 ```
 
-- **Vagas restantes**: com valor menor que 22, aparece "Restam X de 22 vagas" com a barra de ocupação. Com 0, aparece "Vagas esgotadas".
+- **Vagas restantes**: com valor menor que 22, aparece "Restam X vagas" com a barra de ocupação. Com 0, aparece "Vagas esgotadas".
 - **Prazo**: alimenta a contagem regressiva, a barra do topo, a barra fixa no celular e todos os textos "até 5 de novembro". Depois do prazo, a contagem vira "Inscrições encerradas".
 - **Leads**: o formulário abre o WhatsApp com nome, WhatsApp, e-mail e número de pessoas já preenchidos. Se `leadEndpoint` estiver preenchido, os mesmos dados (mais UTMs) são enviados por POST, para uma planilha do Google via Apps Script, Zapier, Make ou CRM.
 - **Pixel/Analytics**: cole os scripts no `<head>` do `index.html`. O formulário já dispara `fbq('track','Lead')`, `gtag('event','generate_lead')` e um evento `lead` no `dataLayer`; os cliques no WhatsApp disparam `Contact`.
