@@ -13,7 +13,7 @@ Para testar localmente: `python3 -m http.server` e abra `http://localhost:8000`.
 ```js
 const CONFIG = {
   whatsapp: '555191911504',                 // número que recebe os contatos
-  deadline: '2026-10-20T23:59:59-04:00',    // fim das inscrições (horário de Manaus)
+  deadline: '2026-11-05T23:59:59-04:00',    // fim das inscrições (horário de Manaus)
   vagasTotal: 22,
   vagasRestantes: 22,                       // atualize conforme vender
   leadEndpoint: '',                         // opcional: URL que recebe os leads em JSON
@@ -21,7 +21,7 @@ const CONFIG = {
 ```
 
 - **Vagas restantes**: com valor menor que 22, aparece "Restam X de 22 vagas" com a barra de ocupação. Com 0, aparece "Vagas esgotadas".
-- **Prazo**: alimenta a contagem regressiva, a barra do topo, a barra fixa no celular e todos os textos "até 20 de outubro". Depois do prazo, a contagem vira "Inscrições encerradas".
+- **Prazo**: alimenta a contagem regressiva, a barra do topo, a barra fixa no celular e todos os textos "até 5 de novembro". Depois do prazo, a contagem vira "Inscrições encerradas".
 - **Leads**: o formulário abre o WhatsApp com nome, WhatsApp, e-mail e número de pessoas já preenchidos. Se `leadEndpoint` estiver preenchido, os mesmos dados (mais UTMs) são enviados por POST, para uma planilha do Google via Apps Script, Zapier, Make ou CRM.
 - **Pixel/Analytics**: cole os scripts no `<head>` do `index.html`. O formulário já dispara `fbq('track','Lead')`, `gtag('event','generate_lead')` e um evento `lead` no `dataLayer`; os cliques no WhatsApp disparam `Contact`.
 
@@ -51,7 +51,7 @@ ffmpeg -i vinheta.mp4 -vf "select='not(mod(n\,2))',scale=1024:576" -fps_mode vfr
 ## Recursos da página
 
 - Barra de urgência fixa com contagem regressiva, contagem grande no hero, na faixa de vídeo e no fechamento
-- Medidor de vagas, faixa "Por que decidir esta semana" e passo a passo da reserva
+- Medidor de vagas, faixa "Por que decidir agora" e passo a passo da reserva
 - Vídeo em loop no hero e numa faixa com parallax no meio da página
 - Efeitos de scroll: revelação de elementos, imagens que se abrem, parallax, galeria horizontal fixada (desktop) e com swipe (celular), linha do tempo que se preenche, números animados, faixa de ingredientes que acelera com o scroll e barra de progresso de leitura
 - Botão de WhatsApp flutuante com balão de mensagem, barra fixa de CTA no celular e pop-up de intenção de saída (só desktop, uma vez por sessão)
