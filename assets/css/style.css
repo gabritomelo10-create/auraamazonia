@@ -631,10 +631,8 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 .people__note { margin-top: 28px; font-size: 13px; color: var(--texto-suave); }
 @media (max-width: 860px) {
   .people__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .people__col { gap: 12px; }
-  .people__col:nth-child(3) { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
-  .people__col:nth-child(3) .pfig:first-child { grid-column: 1 / -1; }
-  .people__col--mid { margin-top: 40px; }
+  .people__col { display: contents; }
+  .people__grid .pfig img, .people__grid .pfig--tall img { aspect-ratio: 4 / 4.4; }
   .pfig figcaption { font-size: 12px; }
 }
 
