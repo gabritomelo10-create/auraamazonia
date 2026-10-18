@@ -5,8 +5,8 @@ const CONFIG = {
   // Fim das inscrições (horário de Manaus, UTC-4)
   deadline: '2026-11-05T23:59:59-04:00',
   vagasTotal: 22,
-  // Atualize conforme as vendas. Com valor menor que o total, aparece "Restam X de 22" + barra.
-  vagasRestantes: 22,
+  // Atualize conforme as vendas. Com valor menor que o total, aparece "Restam X vagas" + barra.
+  vagasRestantes: 20,
   // Opcional: URL que recebe os leads em JSON (Google Apps Script, Zapier, Make, RD Station…)
   leadEndpoint: '',
 };
@@ -88,7 +88,7 @@ const CONFIG = {
       txt.innerHTML = '<b>Vagas esgotadas</b> · entre na lista de espera';
       fill.dataset.w = '100%';
     } else if (rest < total) {
-      txt.innerHTML = `Restam <b>${rest}</b> de ${total} vagas`;
+      txt.innerHTML = rest === 1 ? "Resta <b>1</b> vaga" : `Restam <b>${rest}</b> vagas`;
       fill.dataset.w = `${((total - rest) / total) * 100}%`;
     } else {
       txt.innerHTML = `Turma única: <b>apenas ${total} vagas</b>`;
