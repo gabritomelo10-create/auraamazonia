@@ -117,8 +117,8 @@ button { font: inherit; }
 .header.is-solid { background: rgba(21,61,50,.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 8px 30px rgba(0,0,0,.18); }
 .header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; transition: min-height .35s; }
 .header.is-solid .wrap { min-height: 64px; }
-.header__logo img { height: 46px; width: auto; transition: height .35s; }
-.header.is-solid .header__logo img { height: 38px; }
+.header__logo > img { height: 42px; width: auto; transition: height .35s; }
+.header.is-solid .header__logo > img { height: 34px; }
 .nav { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; }
 .nav a { color: var(--creme); text-decoration: none; position: relative; }
 .nav a:not(.btn)::after {
@@ -130,7 +130,7 @@ button { font: inherit; }
 @media (max-width: 860px) {
   .wpp-float__bubble { max-width: 200px; font-size: 13px; }
   .nav a:not(.btn) { display: none; }
-  .header__logo img { height: 38px; }
+  .header__logo > img { height: 34px; }
 }
 
 /* ---------- Hero com vídeo ---------- */
@@ -352,7 +352,7 @@ button { font: inherit; }
   position: absolute; top: -14px; right: 24px; background: var(--vermelho); color: #fff; font-size: 13px; font-weight: 700;
   letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; box-shadow: 0 8px 20px rgba(216,68,45,.4);
 }
-.ticket__logo { width: 190px; max-width: 60%; height: auto; }
+.ticket__logo { width: 190px; max-width: 100%; height: auto; }
 .ticket__price { font-family: var(--serif); font-size: clamp(44px, 5vw, 60px); line-height: 1; }
 .ticket__muted { font-size: 15px; color: var(--texto-suave); }
 .ticket__deadline { background: #FBE4DF; color: #8E2717; padding: 14px 16px; border-radius: 14px; font-size: 15px; font-weight: 600; display: flex; flex-direction: column; gap: 10px; }
@@ -402,7 +402,7 @@ button { font: inherit; }
 .footer { background: var(--verde-escuro); color: rgba(243,240,232,.8); padding-bottom: 90px; }
 .footer .wrap { padding-top: 48px; padding-bottom: 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 28px; }
 .footer__brand { display: flex; flex-wrap: wrap; align-items: center; gap: 28px; }
-.footer__brand img { height: 56px; width: auto; }
+.footer__brand .lockup > img { height: 64px; width: auto; }
 .footer__aura { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .footer__aura img { height: 36px; }
 .footer__contact { display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
@@ -666,7 +666,7 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 .journey__route { transition: opacity .4s; }
 .is-final .journey__route { opacity: 0; }
 @media (max-width: 860px) {
-  .jstep--intro .jstep__logo { display: none; }
+  .jstep--intro .lockup { display: none; }
   .jstep--intro, .jstep--left, .jstep--right { padding: 18px 20px; }
   .jstep--cta { bottom: 24px; }
   .jstep--cta .jstep__txt { font-size: 14px; }
@@ -681,3 +681,39 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
 .journey__dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; border: 1.5px solid rgba(243,240,232,.7); background: transparent; cursor: pointer; transition: height .35s var(--ease), background .3s; }
 .journey__dots button.is-on { height: 28px; background: var(--amarelo); border-color: var(--amarelo); }
 @media (max-width: 860px) { .journey__dots { right: 10px; gap: 9px; } .journey__dots button { width: 8px; height: 8px; } .journey__dots button.is-on { height: 22px; } }
+
+/* ==========================================================================
+   Logo do Tour + selo "Uma experiência Aura Amazônia" (sempre juntos)
+   ========================================================================== */
+.lockup { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; text-decoration: none; }
+.selo { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; line-height: 1; }
+.selo small { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+.selo img { width: 120px; height: auto; display: block; }
+.selo--light small { color: var(--creme); }
+.selo--dark small { color: var(--verde-escuro); }
+/* topo: selo compacto, só a marca */
+.header__logo.lockup { gap: 3px; }
+.header__logo .selo img { width: 48px; transition: width .35s; }
+.header.is-solid .header__logo .selo img { width: 42px; }
+/* hero */
+.lockup--hero { align-self: flex-start; gap: 14px; }
+.lockup--hero .selo img { width: clamp(110px, 12vw, 160px); }
+.lockup--hero .selo small { font-size: 11px; }
+/* abertura da jornada */
+.lockup--jstep { align-self: flex-start; gap: 12px; }
+.lockup--jstep .selo img { width: clamp(100px, 10vw, 130px); }
+/* ingresso */
+.lockup--ticket { align-self: flex-start; gap: 8px; }
+.lockup--ticket .selo img { width: 92px; }
+.lockup--ticket .selo small { font-size: 9px; }
+/* rodapé */
+.lockup--footer { gap: 8px; }
+.lockup--footer .selo img { width: 84px; }
+.lockup--footer .selo small { font-size: 9px; }
+/* fim da vinheta: o selo entra logo abaixo do logo do vídeo */
+.selo--cta { flex: 1 1 100%; gap: 6px; margin-bottom: 2px; }
+.selo--cta img { width: 112px; }
+@media (max-width: 860px) {
+  .header__logo .selo img { width: 40px; }
+  .selo--cta img { width: 92px; }
+}
