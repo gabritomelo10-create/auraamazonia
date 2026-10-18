@@ -3,7 +3,7 @@
 const CONFIG = {
   whatsapp: '555191911504',
   // Fim das inscrições (horário de Manaus, UTC-4)
-  deadline: '2026-10-20T23:59:59-04:00',
+  deadline: '2026-11-05T23:59:59-04:00',
   vagasTotal: 22,
   // Atualize conforme as vendas. Com valor menor que o total, aparece "Restam X de 22" + barra.
   vagasRestantes: 22,
