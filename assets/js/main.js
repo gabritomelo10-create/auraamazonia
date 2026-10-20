@@ -8,7 +8,7 @@ const CONFIG = {
   // Atualize conforme as vendas. Com valor menor que o total, aparece "Restam X vagas" + barra.
   vagasRestantes: 20,
   // URL do Apps Script que grava os leads na planilha (ver scripts/planilha-leads.gs)
-  leadEndpoint: '',
+  leadEndpoint: 'https://script.google.com/macros/s/AKfycbx4pn4hpI1-gRfOlApw9uf0fcCNJvC6aOgVkqdwSflmVn5vrENg1kSfBbOX2p2BJz8/exec',
   // Dados da empresa: aparecem no rodapé e no bloco "Compra segura" quando preenchidos
   cnpj: '',
   cadastur: '',
