@@ -449,13 +449,21 @@
         <form class="form" data-lead-form="oferta" novalidate>
           <div class="form__fields" style="display:flex;flex-direction:column;gap:12px">
             <div class="field"><label for="f-nome">Nome completo</label><input id="f-nome" name="nome" autocomplete="name" required placeholder="Como podemos te chamar?"><span class="field__err">Informe seu nome.</span></div>
-            <div class="form__row">
-              <div class="field"><label for="f-wpp">WhatsApp</label><input id="f-wpp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(92) 90000-0000"><span class="field__err">Informe um WhatsApp com DDD.</span></div>
-              <div class="field"><label for="f-pessoas">Quantas pessoas?</label>
-                <select id="f-pessoas" name="pessoas"><option value="1">Só eu</option><option value="2">2 pessoas</option><option value="3">3 pessoas</option><option value="4+">4 ou mais</option></select>
-              </div>
-            </div>
             <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="voce@email.com"><span class="field__err">Informe um e-mail válido.</span></div>
+            <div class="form__row">
+              <div class="field"><label for="f-wpp">Telefone (WhatsApp)</label><input id="f-wpp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(92) 90000-0000"><span class="field__err">Informe um telefone com DDD.</span></div>
+              <div class="field"><label for="f-cidade">Cidade e estado</label><input id="f-cidade" name="cidade" autocomplete="address-level2" required placeholder="Ex.: Manaus, AM"><span class="field__err">Informe sua cidade e estado.</span></div>
+            </div>
+            <fieldset class="field field--choice" data-required-group="disponibilidade">
+              <legend>Você tem disponibilidade para viajar de 25 a 30/11?</legend>
+              <div class="choices"><label class="choice"><input type="radio" name="disponibilidade" value="Sim"><span>Sim</span></label><label class="choice"><input type="radio" name="disponibilidade" value="Ainda não sei"><span>Ainda não sei</span></label><label class="choice"><input type="radio" name="disponibilidade" value="Não"><span>Não</span></label></div>
+              <span class="field__err">Escolha uma opção.</span>
+            </fieldset>
+            <fieldset class="field field--choice" data-required-group="investimento">
+              <legend>O investimento de R$ 11.999 por pessoa está dentro do seu planejamento?</legend>
+              <div class="choices"><label class="choice"><input type="radio" name="investimento" value="Sim"><span>Sim</span></label><label class="choice"><input type="radio" name="investimento" value="Quero ver as formas de pagamento"><span>Quero ver as formas de pagamento</span></label><label class="choice"><input type="radio" name="investimento" value="Não no momento"><span>Não no momento</span></label></div>
+              <span class="field__err">Escolha uma opção.</span>
+            </fieldset>
             <button type="submit" class="btn btn--primary btn--block btn--pulse">Garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></button>
             <p class="form__note">Ao enviar, abrimos o WhatsApp da Aura com seus dados para confirmar a vaga. Sem spam.</p>
           </div>

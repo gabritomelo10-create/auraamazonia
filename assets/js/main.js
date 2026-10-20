@@ -289,15 +289,25 @@ const CONFIG = {
 
   $$('[data-lead-form]').forEach((form) => {
     $$('input[type="tel"]', form).forEach(maskPhone);
-    $$('input', form).forEach((inp) => inp.addEventListener('input', () => inp.closest('.field').classList.remove('has-error')));
+    $$('input', form).forEach((inp) => {
+      const clear = () => inp.closest('.field').classList.remove('has-error');
+      inp.addEventListener('input', clear);
+      inp.addEventListener('change', clear);
+    });
 
     form.addEventListener('submit', (ev) => {
       ev.preventDefault();
       let ok = true, firstBad = null;
       $$('input[required]', form).forEach((inp) => {
-        const valid = (validators[inp.name] || ((v) => v.trim() !== ''))(inp.value);
+        const valid = (validators[inp.name] || ((v) => v.trim().length >= 2))(inp.value);
         inp.closest('.field').classList.toggle('has-error', !valid);
         if (!valid) { ok = false; firstBad = firstBad || inp; }
+      });
+      // perguntas de múltipla escolha: uma opção marcada em cada grupo
+      $$('[data-required-group]', form).forEach((g) => {
+        const valid = !!$('input:checked', g);
+        g.classList.toggle('has-error', !valid);
+        if (!valid) { ok = false; firstBad = firstBad || $('input', g); }
       });
       if (!ok) { firstBad.focus(); return; }
 
@@ -309,8 +319,10 @@ const CONFIG = {
         ? [`Olá! Sou ${data.nome} e quero receber o roteiro completo do Tour Gastronômico de Maués (25 a 30/11).`]
         : [
           `Olá! Sou ${data.nome} e quero garantir minha vaga no Tour Gastronômico de Maués (25 a 30/11).`,
-          `Pessoas: ${data.pessoas === '1' ? 'só eu' : data.pessoas}`,
           `E-mail: ${data.email}`,
+          `Cidade: ${data.cidade}`,
+          `Disponibilidade de 25 a 30/11: ${data.disponibilidade}`,
+          `Investimento de R$ 11.999 no planejamento: ${data.investimento}`,
         ];
       linhas.push(`WhatsApp: ${data.whatsapp}`);
       const url = wppUrl(linhas.join('\n'));
@@ -326,7 +338,9 @@ const CONFIG = {
           body: JSON.stringify(lead),
         }).catch(() => {});
       }
-      track('lead', { origem, pessoas: data.pessoas || '1' });
+      // lead qualificado = pode viajar nas datas e o valor cabe no planejamento
+      const qualificado = data.disponibilidade === 'Sim' && data.investimento !== 'Não no momento';
+      track('lead', { origem, disponibilidade: data.disponibilidade || '', investimento: data.investimento || '', qualificado });
       store.set('leadSent', '1');
       form.classList.add('is-sent');
     });

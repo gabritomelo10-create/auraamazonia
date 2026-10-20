@@ -715,3 +715,15 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
   .header__logo .selo img { width: 40px; }
   .selo--cta img { width: 92px; }
 }
+
+/* perguntas de qualificação no formulário */
+.field--choice { border: 0; margin: 0; padding: 0; min-width: 0; }
+.field--choice legend { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; padding: 0; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { position: relative; cursor: pointer; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice span { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--linha); background: #fff; font-size: 15px; font-weight: 500; transition: background .2s, border-color .2s, color .2s; }
+.choice:hover span { border-color: var(--verde); }
+.choice input:checked + span { background: var(--verde); border-color: var(--verde); color: #fff; }
+.choice input:focus-visible + span { box-shadow: 0 0 0 4px rgba(20,107,67,.2); }
+.field--choice.has-error .choice span { border-color: var(--vermelho); }
