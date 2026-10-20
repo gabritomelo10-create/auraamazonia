@@ -22,8 +22,13 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
   (function () {
-    var d = document.documentElement; d.classList.add('js');
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-journey');
+    var d = document.documentElement, q = location.search; d.classList.add('js');
+    // quem chega por anúncio (utm/fbclid/gclid) vai direto para a oferta; ?jornada=1 força a jornada
+    var ad = /[?&](utm_source|utm_medium|utm_campaign|fbclid|gclid|ttclid|gad_source)=/.test(q);
+    try { if (ad) sessionStorage.setItem('fromAd', '1'); else if (sessionStorage.getItem('fromAd')) ad = true; } catch (e) {}
+    if (/[?&]jornada=1/.test(q)) ad = false;
+    if (ad) d.classList.add('from-ad');
+    if (!ad && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-journey');
   })();
 </script>
 
@@ -82,8 +87,8 @@
         <div class="jstep jstep--left jstep--intro" data-jstep data-fin="0" data-fout="6">
           <p class="eyebrow eyebrow--amarelo">25 a 30 de novembro de 2026 · Maués, AM</p>
           <span class="lockup lockup--jstep"><img class="jstep__logo" src="assets/img/logo-tour-light.png" alt="Tour Gastronômico de Maués" width="880" height="460"><span class="selo selo--light"><small>Uma experiência</small><img src="assets/img/selo-aura-light.png" alt="Aura Amazônia" width="600" height="278"></span></span>
-          <p class="jstep__big">A origem tem sabor.</p>
-          <p class="jstep__txt">Role a página e navegue com a gente até a Terra do Guaraná.</p>
+          <p class="jstep__big">Viaje pelos Sabores da Amazônia durante 6 dias</p>
+          <p class="jstep__txt">Role a página e navegue com a gente até Maués, a Terra do Guaraná.</p>
         </div>
         <div class="jstep jstep--left" data-jstep data-fin="30" data-fout="58">
           <p class="eyebrow eyebrow--amarelo">Dia 2 · A travessia</p>
@@ -132,16 +137,17 @@
     <div class="wrap">
       <div class="hero__copy">
         <span class="hero__badge" data-hero style="--d:.1s"><svg width="16" height="16" aria-hidden="true"><use href="#i-cal"/></svg>25 a 30 de novembro de 2026 · Maués, AM</span>
-        <h1 data-hero style="--d:.25s" class="lockup lockup--hero"><img class="hero__logo" src="assets/img/logo-tour-light.png" alt="Tour Gastronômico de Maués" width="880" height="460"><span class="selo selo--light"><small>Uma experiência</small><img src="assets/img/selo-aura-light.png" alt="Aura Amazônia" width="600" height="278"></span></h1>
-        <p class="hero__title" data-hero style="--d:.4s">A origem tem sabor. <em>E só 22 pessoas vão provar.</em></p>
-        <p class="hero__sub" data-hero style="--d:.55s">Seis dias na Terra do Guaraná para provar, escutar quem cultiva e conhecer a Amazônia pelo paladar — com as três noites da Festa do Guaraná e o cuidado da Aura Amazônia em cada encontro.</p>
+        <div data-hero style="--d:.25s" class="lockup lockup--hero"><img class="hero__logo" src="assets/img/logo-tour-light.png" alt="Tour Gastronômico de Maués" width="880" height="460"><span class="selo selo--light"><small>Uma experiência</small><img src="assets/img/selo-aura-light.png" alt="Aura Amazônia" width="600" height="278"></span></div>
+        <h1 class="hero__title" data-hero style="--d:.4s">Viaje pelos Sabores da Amazônia <em>durante 6 dias</em></h1>
+        <p class="hero__sub" data-hero style="--d:.55s">Uma imersão gastronômica em Maués, a Terra do Guaraná, com as três noites da Festa do Guaraná. <strong>Passagem aérea até Manaus*, hospedagem, refeições e todo o roteiro inclusos.</strong></p>
         <div class="hero__ctas" data-hero style="--d:.7s">
           <a href="#vagas" class="btn btn--primary btn--pulse">Quero garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <a href="https://wa.me/555191911504?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Tour%20Gastron%C3%B4mico%20de%20Mau%C3%A9s." data-wpp="Olá! Quero saber mais sobre o Tour Gastronômico de Maués." class="btn btn--ghost" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-wpp"/></svg>Tirar dúvidas no WhatsApp</a>
         </div>
         <div class="hero__proof" data-hero style="--d:.85s">
           <span><svg width="18" height="18" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-users"/></svg>Turma única · 22 vagas</span>
-          <span><svg width="18" height="18" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-house"/></svg>Hospedagem e refeições inclusas</span>
+          <span><svg width="18" height="18" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Até 10x sem juros</span>
+          <span><svg width="18" height="18" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-fire"/></svg>Aura Amazônia, Prêmio Braztoa 2024</span>
         </div>
       </div>
 
@@ -157,8 +163,14 @@
           <span class="vagas__txt" data-vagas-txt>Turma única: <b>22 vagas</b></span>
           <div class="vagas__bar"><div class="vagas__fill" data-vagas-fill></div></div>
         </div>
-        <div class="urgency-card__price">R$ 11.999<small>por pessoa · passagem até Manaus, hospedagem e refeições inclusas</small></div>
-        <a href="#vagas" class="btn btn--amarelo btn--block">Reservar meu lugar</a>
+        <div class="urgency-card__price">R$ 11.999<small>por pessoa · ou <b>10x de R$ 1.199,90 sem juros</b> no cartão</small></div>
+        <form class="miniform" data-mini-form novalidate>
+          <p class="miniform__title">Garanta sua vaga em 30 segundos</p>
+          <div class="field"><label class="sr-only" for="m1-nome">Seu nome</label><input id="m1-nome" name="nome" autocomplete="name" required placeholder="Seu nome"><span class="field__err">Informe seu nome.</span></div>
+          <div class="field"><label class="sr-only" for="m1-wpp">WhatsApp com DDD</label><input id="m1-wpp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="WhatsApp com DDD"><span class="field__err">Informe um WhatsApp com DDD.</span></div>
+          <button type="submit" class="btn btn--amarelo btn--block">Quero minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        </form>
+        <p class="footnote footnote--light">*Passagem aérea até Manaus saindo de qualquer cidade do Brasil. Para viagens internacionais até o Brasil, consulte as condições com a equipe da Aura.</p>
       </aside>
     </div>
   </section>
@@ -401,6 +413,38 @@
     </div>
   </section>
 
+  <!-- QUEM JÁ VIAJOU COM A AURA -->
+  <section class="section proof" aria-labelledby="proof-title">
+    <div class="wrap">
+      <div class="proof__head">
+        <p class="eyebrow" data-reveal>Quem já viajou com a Aura</p>
+        <h2 class="h2" id="proof-title" data-reveal style="--d:.1s">Experiências que ficam na memória</h2>
+      </div>
+      <div class="proof__stats">
+        <div class="proof__stat" data-reveal><b>16</b><span>edições do Tour Aromático da Amazônia, outra experiência da Aura</span></div>
+        <div class="proof__stat" data-reveal style="--d:.1s"><b>2024</b><span>Prêmio Braztoa de Sustentabilidade, categoria Experiência/Produto</span></div>
+        <div class="proof__stat" data-reveal style="--d:.2s"><b>2020</b><span>desde então, criando turismo junto com comunidades ribeirinhas</span></div>
+      </div>
+      <div class="proof__quotes">
+        <figure class="quote" data-reveal>
+          <blockquote>“Essa viagem é uma transformação profunda, que reverbera dentro de mim por tempo indeterminado.”</blockquote>
+          <figcaption><b>Camila Scolaro Reig</b><span>Viajante do Tour Aromático da Amazônia</span></figcaption>
+        </figure>
+        <figure class="quote" data-reveal style="--d:.1s">
+          <blockquote>“O Tour me mostrou o caminho que quero seguir: usufruir das riquezas naturais de maneira sustentável.”</blockquote>
+          <figcaption><b>Gabriela de Moraes Rêgo</b><span>Viajante do Tour Aromático da Amazônia</span></figcaption>
+        </figure>
+      </div>
+      <div class="proof__press" data-reveal>
+        <span class="proof__press-lbl">A Aura em destaque</span>
+        <a href="https://visitbrasil.com/en/experience-aromatic-adventures-in-the-amazon-rainforest/" target="_blank" rel="noopener">Visit Brasil <small>portal oficial da Embratur</small></a>
+        <a href="https://portalamazonia.com/meio-ambiente/tour-aromatico-na-amazonia-atividade-e-opcao-de-turismo-de-base-comunitaria/" target="_blank" rel="noopener">Portal Amazônia</a>
+        <a href="https://www.auraamazonia.com.br/post/pr%C3%AAmio-braztoa-de-sustentabilidade-2024" target="_blank" rel="noopener">Prêmio Braztoa 2024</a>
+      </div>
+      <p class="people__note" data-reveal>Depoimentos publicados pela Aura Amazônia sobre o Tour Aromático da Amazônia.</p>
+    </div>
+  </section>
+
   <!-- OFERTA + FORMULÁRIO -->
   <section id="vagas" class="section section--dark">
     <img class="floater floater--left" data-floater data-depth="0.6" src="assets/img/aura/guarana-3.png" alt="" width="300" height="290" loading="lazy">
@@ -409,7 +453,7 @@
         <p class="eyebrow eyebrow--amarelo" data-reveal>O que está incluso</p>
         <h2 class="h2" data-reveal style="--d:.1s">Tudo pensado para você só aproveitar</h2>
         <ul class="incl">
-          <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Passagem até Manaus</li>
+          <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Passagem aérea até Manaus, saindo da sua cidade*</li>
           <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Hospedagem durante toda a viagem</li>
           <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Refeições inclusas</li>
           <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Transfer Manaus–Itacoatiara e lancha até Maués, ida e volta</li>
@@ -419,6 +463,8 @@
           <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>As três noites da Festa do Guaraná</li>
           <li data-reveal><svg width="22" height="22" style="color:var(--amarelo)" aria-hidden="true"><use href="#i-check"/></svg>Kit do participante</li>
         </ul>
+
+        <p class="footnote footnote--light" data-reveal>*Passagem aérea até Manaus saindo de qualquer cidade do Brasil. Para viagens internacionais até o Brasil, consulte as condições com a equipe da Aura.</p>
 
         <p class="eyebrow eyebrow--amarelo" style="margin-top:20px" data-reveal>Como garantir sua vaga</p>
         <div class="steps">
@@ -435,7 +481,9 @@
           <p class="eyebrow">Ingresso individual · 25 a 30 nov</p>
           <p class="ticket__muted" style="margin-top:8px">Investimento por pessoa</p>
           <p class="ticket__price">R$ 11.999</p>
-          <p class="ticket__muted">Passagem, hospedagem e refeições inclusas</p>
+          <p class="ticket__parcelas">ou <b>10x de R$ 1.199,90 sem juros</b> no cartão</p>
+          <p class="ticket__muted">Pix ou cartão à vista · passagem aérea*, hospedagem e refeições inclusas</p>
+          <p class="ticket__award"><svg width="18" height="18" aria-hidden="true"><use href="#i-fire"/></svg>Da Aura Amazônia, vencedora do Prêmio Braztoa de Sustentabilidade 2024</p>
         </div>
 
         <div class="ticket__deadline">
@@ -447,13 +495,16 @@
         </div>
 
         <form class="form" data-lead-form="oferta" novalidate>
-          <div class="form__fields" style="display:flex;flex-direction:column;gap:12px">
+          <div class="form__fields">
+            <p class="form__steps"><span data-step-label>Etapa 1 de 2</span> · leva 30 segundos</p>
+            <div class="form__step" data-step="1">
             <div class="field"><label for="f-nome">Nome completo</label><input id="f-nome" name="nome" autocomplete="name" required placeholder="Como podemos te chamar?"><span class="field__err">Informe seu nome.</span></div>
             <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="voce@email.com"><span class="field__err">Informe um e-mail válido.</span></div>
-            <div class="form__row">
-              <div class="field"><label for="f-wpp">Telefone (WhatsApp)</label><input id="f-wpp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(92) 90000-0000"><span class="field__err">Informe um telefone com DDD.</span></div>
-              <div class="field"><label for="f-cidade">Cidade e estado</label><input id="f-cidade" name="cidade" autocomplete="address-level2" required placeholder="Ex.: Manaus, AM"><span class="field__err">Informe sua cidade e estado.</span></div>
+            <div class="field"><label for="f-wpp">Telefone (WhatsApp)</label><input id="f-wpp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(92) 90000-0000"><span class="field__err">Informe um telefone com DDD.</span></div>
+            <button type="submit" class="btn btn--primary btn--block btn--pulse">Continuar <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></button>
             </div>
+            <div class="form__step" data-step="2" hidden>
+            <div class="field"><label for="f-cidade">Cidade e estado</label><input id="f-cidade" name="cidade" autocomplete="address-level2" required placeholder="Ex.: Manaus, AM"><span class="field__err">Informe sua cidade e estado.</span></div>
             <fieldset class="field field--choice" data-required-group="disponibilidade">
               <legend>Você tem disponibilidade para viajar de 25 a 30/11?</legend>
               <div class="choices"><label class="choice"><input type="radio" name="disponibilidade" value="Sim"><span>Sim</span></label><label class="choice"><input type="radio" name="disponibilidade" value="Ainda não sei"><span>Ainda não sei</span></label><label class="choice"><input type="radio" name="disponibilidade" value="Não"><span>Não</span></label></div>
@@ -465,7 +516,9 @@
               <span class="field__err">Escolha uma opção.</span>
             </fieldset>
             <button type="submit" class="btn btn--primary btn--block btn--pulse">Garantir minha vaga <svg class="arrow" width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-            <p class="form__note">Ao enviar, abrimos o WhatsApp da Aura com seus dados para confirmar a vaga. Sem spam.</p>
+            <button type="button" class="form__back" data-step-back>← Voltar</button>
+            </div>
+            <p class="form__note">Ao concluir, abrimos o WhatsApp da Aura com seus dados para confirmar a vaga. Sem spam.</p>
           </div>
           <div class="form__ok" role="status">
             <svg width="48" height="48" style="color:var(--verde)" aria-hidden="true"><use href="#i-check"/></svg>
@@ -474,6 +527,14 @@
             <a class="btn btn--wpp btn--block" data-wpp-after href="https://wa.me/555191911504" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-wpp"/></svg>Abrir WhatsApp</a>
           </div>
         </form>
+        <div class="secure">
+          <p class="secure__title"><svg width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Compra segura</p>
+          <ul>
+            <li>Arrependimento em até 7 dias após a compra, com reembolso integral</li>
+            <li>Regras de cancelamento claras, <a href="#cancelamento">veja a política</a></li>
+            <li data-company hidden>Aura Amazônia · <span data-company-txt></span></li>
+          </ul>
+        </div>
         <a class="link-wpp" href="https://wa.me/555191911504?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Tour%20Gastron%C3%B4mico%20de%20Mau%C3%A9s." data-wpp="Olá! Quero saber mais sobre o Tour Gastronômico de Maués." target="_blank" rel="noopener"><svg width="18" height="18" aria-hidden="true"><use href="#i-wpp"/></svg>Prefiro tirar dúvidas no WhatsApp</a>
       </div>
     </div>
@@ -506,11 +567,35 @@
         </details>
         <details>
           <summary>Preciso chegar a Manaus por conta própria?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-          <p>Não. A passagem até Manaus já está inclusa no investimento, assim como a hospedagem e as refeições. A Aura Amazônia cuida da sua chegada.</p>
+          <p>Não. A passagem aérea até Manaus está inclusa, saindo da cidade onde você estiver no Brasil, assim como a hospedagem e as refeições. A Aura Amazônia cuida da sua chegada.*</p>
+          <p class="footnote">*Para viagens internacionais até o Brasil, consulte as condições com a equipe da Aura.</p>
         </details>
         <details>
-          <summary>Como funcionam o pagamento e o cancelamento?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-          <p>O investimento é de R$ 11.999 por pessoa. As formas de pagamento são combinadas no atendimento pelo WhatsApp, e a reserva segue a política de cancelamento padrão da Aura Amazônia, enviada junto com a confirmação.</p>
+          <summary>Quais são as formas de pagamento?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <p>O investimento é de R$ 11.999 por pessoa, no Pix ou no cartão à vista, ou em até 10x de R$ 1.199,90 sem juros no cartão de crédito. O pagamento é feito no atendimento pelo WhatsApp, e você recebe a confirmação por e-mail.</p>
+        </details>
+        <details id="cancelamento">
+          <summary>Qual é a política de cancelamento?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="policy">
+            <p><b>Arrependimento:</b> em até 7 dias após a compra, você pode desistir e recebe o valor pago de volta, integralmente (art. 49 do Código de Defesa do Consumidor).</p>
+            <p><b>Com 30 dias ou mais antes da viagem:</b> reembolso do valor pago, descontada uma taxa administrativa de 10%.</p>
+            <p><b>Com menos de 30 dias:</b> multa de 20% do valor do pacote, somada aos custos já pagos a fornecedores que não sejam reembolsáveis, como passagens aéreas emitidas, mediante comprovação.</p>
+            <p><b>Troca de participante:</b> você pode transferir sua vaga para outra pessoa até 10 dias antes da viagem, sem custo da Aura (taxas de remarcação da companhia aérea, se houver, ficam por conta do participante).</p>
+            <p><b>Se a viagem for cancelada pela Aura:</b> reembolso integral do valor pago.</p>
+            <p>Reembolsos são feitos em até 30 dias, pela mesma forma de pagamento. As condições completas vão no contrato enviado com a confirmação.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Preciso de alguma vacina?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <p>Recomendamos a vacina contra a febre amarela, indicada para viagens à Amazônia, tomada com pelo menos 10 dias de antecedência, e as doses da vacina contra a covid-19 em dia, para proteger as comunidades que vamos visitar.</p>
+        </details>
+        <details>
+          <summary>O que não está incluso?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <p>Despesas pessoais, como compras, bebidas e serviços extras fora do roteiro, e passeios opcionais. A lista completa do que está incluso vai no contrato.</p>
+        </details>
+        <details>
+          <summary>Posso ir com acompanhante?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <p>Pode. O valor é por pessoa: cada participante garante a própria vaga, e vocês viajam juntos no mesmo grupo. Como a turma tem só 22 vagas, vale reservar as duas ao mesmo tempo.</p>
         </details>
         <details>
           <summary>Quando recebo os horários de cada dia?<svg width="22" height="22" style="color:var(--vermelho)" aria-hidden="true"><use href="#i-plus"/></svg></summary>
@@ -556,6 +641,7 @@
     </div>
     <div class="footer__contact">
       <a href="https://wa.me/555191911504?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Tour%20Gastron%C3%B4mico%20de%20Mau%C3%A9s." data-wpp="Olá! Quero saber mais sobre o Tour Gastronômico de Maués." target="_blank" rel="noopener">WhatsApp: +55 51 9191-1504</a>
+      <span data-company hidden data-company-txt></span>
       <span>© 2026 Aura Amazônia</span>
     </div>
   </div>
@@ -576,7 +662,7 @@
 
 <!-- BARRA FIXA MOBILE -->
 <div class="mobile-bar" data-mobile-bar>
-  <div class="mobile-bar__info"><b>R$ 11.999</b><span>Encerra em <span data-countdown-inline>7d 00h</span></span></div>
+  <div class="mobile-bar__info"><b>10x de R$ 1.199,90</b><span>Encerra em <span data-countdown-inline>7d 00h</span></span></div>
   <a href="#vagas" class="btn btn--primary">Garantir vaga</a>
 </div>
 

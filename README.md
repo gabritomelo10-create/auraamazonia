@@ -25,6 +25,23 @@ const CONFIG = {
 - **Leads**: o formulário abre o WhatsApp com nome, WhatsApp, e-mail e número de pessoas já preenchidos. Se `leadEndpoint` estiver preenchido, os mesmos dados (mais UTMs) são enviados por POST, para uma planilha do Google via Apps Script, Zapier, Make ou CRM.
 - **Pixel/Analytics**: cole os scripts no `<head>` do `index.html`. O formulário já dispara `fbq('track','Lead')`, `gtag('event','generate_lead')` e um evento `lead` no `dataLayer`; os cliques no WhatsApp disparam `Contact`.
 
+## Leads na planilha
+
+Os formulários gravam os leads na planilha **Leads · Tour Gastronômico de Maués** (Google Drive, pasta TOUR GASTRONÔMICO DE MAUÉS), por meio do script `scripts/planilha-leads.gs`. Para ativar: abra a planilha → Extensões → Apps Script → cole o script → Implantar → App da Web (executar como você, acesso "Qualquer pessoa") → copie a URL `/exec` para `CONFIG.leadEndpoint`.
+
+- O formulário principal tem 2 etapas. A etapa 1 (nome, e-mail, WhatsApp) já cria a linha; a etapa 2 (cidade, disponibilidade e investimento) completa a mesma linha. Quem desiste no meio também fica registrado.
+- O formulário curto do topo (nome e WhatsApp) salva o contato e leva para a etapa seguinte do formulário principal, já preenchido.
+- Cada linha traz as UTMs, `fbclid`/`gclid` e a coluna `qualificado` (pode viajar nas datas e o valor cabe no planejamento).
+- Eventos para Pixel/GA4: `lead_iniciado` (etapa 1), `lead` (envio completo), `lead_qualificado` e `whatsapp_click`.
+
+## Quem chega por anúncio
+
+Links com `utm_*`, `fbclid`, `gclid` ou `ttclid` pulam a jornada animada e abrem direto na oferta (título, preço, formulário curto). A escolha vale para a sessão inteira. Para ver a jornada mesmo com UTM, acrescente `?jornada=1`.
+
+## Dados da empresa
+
+Preencha `cnpj` e `cadastur` no `CONFIG` (`assets/js/main.js`): eles aparecem no rodapé e no bloco "Compra segura". Vazios, não aparecem.
+
 ## Vídeos
 
 `assets/video/floresta.mp4` é um corte de filmagens reais da Aura (rio e floresta). Para trocar por filmagens de Maués, substitua o arquivo e o pôster `floresta-poster.jpg` (de preferência 1280×720, sem áudio, até uns 3 MB).
