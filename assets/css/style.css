@@ -715,3 +715,97 @@ body.has-mobile-bar .wpp-float { bottom: 92px; }
   .header__logo .selo img { width: 40px; }
   .selo--cta img { width: 92px; }
 }
+
+/* perguntas de qualificação no formulário */
+.field--choice { border: 0; margin: 0; padding: 0; min-width: 0; }
+.field--choice legend { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; padding: 0; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { position: relative; cursor: pointer; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice span { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--linha); background: #fff; font-size: 15px; font-weight: 500; transition: background .2s, border-color .2s, color .2s; }
+.choice:hover span { border-color: var(--verde); }
+.choice input:checked + span { background: var(--verde); border-color: var(--verde); color: #fff; }
+.choice input:focus-visible + span { box-shadow: 0 0 0 4px rgba(20,107,67,.2); }
+.field--choice.has-error .choice span { border-color: var(--vermelho); }
+
+/* ==========================================================================
+   Conversão: título da primeira tela, formulário curto, prova social, compra segura
+   ========================================================================== */
+.hero__title { font-size: clamp(36px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.01em; }
+.hero__sub strong { color: var(--creme); font-weight: 600; }
+.lockup--hero .hero__logo { max-width: 300px; }
+@media (max-width: 480px) { .lockup--hero .hero__logo { max-width: 220px; } }
+
+.footnote { font-size: 12px; line-height: 1.45; color: var(--texto-suave); margin-top: 4px; }
+.footnote--light { color: rgba(243,240,232,.65); }
+.urgency-card__price small b { color: var(--amarelo); font-weight: 700; }
+
+.miniform { display: flex; flex-direction: column; gap: 10px; }
+.miniform__title { font-size: 14px; font-weight: 700; color: var(--creme); }
+.miniform input { width: 100%; min-height: 50px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid rgba(243,240,232,.35); background: rgba(243,240,232,.95); color: var(--verde-escuro); font: inherit; font-size: 16px; }
+.miniform input:focus { outline: none; border-color: var(--amarelo); box-shadow: 0 0 0 4px rgba(243,167,44,.25); }
+.miniform .field__err { color: #ffd2c6; }
+
+/* formulário em 2 etapas */
+.form__fields { display: flex; flex-direction: column; gap: 12px; }
+.form__step { display: flex; flex-direction: column; gap: 12px; }
+.form__step[hidden] { display: none; }
+.form__steps { font-size: 13px; font-weight: 600; color: var(--verde); letter-spacing: .02em; }
+.form__back { align-self: center; background: none; border: 0; color: var(--texto-suave); font-size: 14px; cursor: pointer; padding: 8px; }
+.form__back:hover { color: var(--verde-escuro); }
+#vagas.is-highlight .ticket { animation: ticketGlow 1.6s var(--ease) 2; }
+@keyframes ticketGlow { 50% { box-shadow: 0 0 0 6px rgba(243,167,44,.55), 0 40px 80px rgba(0,0,0,.3); } }
+
+.ticket__parcelas { font-size: 17px; color: var(--verde-escuro); margin-top: 6px; }
+.ticket__parcelas b { color: var(--vermelho); }
+.ticket__award { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--verde); }
+.ticket__award svg { flex: none; color: var(--amarelo); }
+
+.secure { border-top: 1px solid var(--linha); padding-top: 14px; }
+.secure__title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--verde); margin-bottom: 6px; }
+.secure ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--texto-suave); }
+.secure li::before { content: "·"; margin-right: 6px; color: var(--verde); font-weight: 700; }
+.secure a { color: var(--verde); font-weight: 600; }
+
+.policy { padding-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
+.faq .policy p { padding: 0; font-size: 16px; }
+.faq details > .footnote { padding: 0 0 24px; margin-top: -14px; }
+
+/* prova social */
+.proof { background: var(--areia); }
+.proof__head { max-width: 760px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+.proof__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-bottom: 36px; }
+.proof__stat { background: #fff; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 6px; }
+.proof__stat b { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4vw, 52px); line-height: 1; color: var(--vermelho); }
+.proof__stat span { font-size: 15px; color: var(--texto); }
+.proof__quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.quote { margin: 0; background: var(--verde-escuro); color: var(--creme); border-radius: 22px; padding: 32px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden; }
+.quote::before { content: "“"; position: absolute; right: 18px; top: -18px; font-family: var(--serif); font-size: 160px; color: rgba(243,167,44,.18); line-height: 1; }
+.quote blockquote { margin: 0; font-family: var(--serif); font-size: clamp(20px, 2vw, 26px); line-height: 1.35; }
+.quote figcaption { display: flex; flex-direction: column; font-size: 14px; }
+.quote figcaption b { color: var(--amarelo); font-size: 16px; }
+.quote figcaption span { color: rgba(243,240,232,.75); }
+.proof__press { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--linha); }
+.proof__press-lbl { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-suave); }
+.proof__press a { font-family: var(--serif); font-size: 20px; color: var(--verde-escuro); text-decoration: none; }
+.proof__press a small { font-family: var(--sans); font-size: 12px; color: var(--texto-suave); margin-left: 4px; }
+.proof__press a:hover { color: var(--verde); }
+@media (max-width: 860px) {
+  .proof__stats, .proof__quotes { grid-template-columns: minmax(0, 1fr); }
+  .quote { padding: 26px 22px; }
+}
+/* primeira tela mais objetiva: título e botão visíveis sem rolar */
+.from-ad .hero { padding-top: 104px; }
+.lockup--hero .hero__logo { max-width: 230px; }
+.lockup--hero .selo img { width: clamp(84px, 8vw, 110px); }
+.hero__title { font-size: clamp(34px, 4.2vw, 58px); }
+@media (max-width: 860px) {
+  .hero__copy { gap: 16px; }
+  .lockup--hero { gap: 8px; }
+  .lockup--hero .hero__logo { max-width: 150px; }
+  .lockup--hero .selo img { width: 76px; }
+  .lockup--hero .selo small { font-size: 9px; }
+  .hero__badge { font-size: 11px; padding: 6px 12px; }
+  .hero__title { font-size: 32px; }
+  .hero__sub { font-size: 16px; }
+}

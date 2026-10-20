@@ -7,8 +7,11 @@ const CONFIG = {
   vagasTotal: 22,
   // Atualize conforme as vendas. Com valor menor que o total, aparece "Restam X vagas" + barra.
   vagasRestantes: 20,
-  // Opcional: URL que recebe os leads em JSON (Google Apps Script, Zapier, Make, RD Station…)
-  leadEndpoint: '',
+  // URL do Apps Script que grava os leads na planilha (ver scripts/planilha-leads.gs)
+  leadEndpoint: 'https://script.google.com/macros/s/AKfycbx4pn4hpI1-gRfOlApw9uf0fcCNJvC6aOgVkqdwSflmVn5vrENg1kSfBbOX2p2BJz8/exec',
+  // Dados da empresa: aparecem no rodapé e no bloco "Compra segura" quando preenchidos
+  cnpj: '',
+  cadastur: '',
 };
 
 (() => {
@@ -23,8 +26,11 @@ const CONFIG = {
   };
   const track = (evt, data) => {
     (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: evt }, data || {}));
-    if (typeof window.fbq === 'function') window.fbq('track', evt === 'lead' ? 'Lead' : 'Contact');
-    if (typeof window.gtag === 'function') window.gtag('event', evt === 'lead' ? 'generate_lead' : 'contact', data || {});
+    // Meta: eventos padrão para lead e contato; personalizados para etapa 1 e lead qualificado
+    const META = { lead: ['track', 'Lead'], whatsapp_click: ['track', 'Contact'], lead_iniciado: ['trackCustom', 'LeadIniciado'], lead_qualificado: ['trackCustom', 'LeadQualificado'] };
+    const GA = { lead: 'generate_lead', whatsapp_click: 'contact', lead_iniciado: 'lead_iniciado', lead_qualificado: 'lead_qualificado' };
+    if (typeof window.fbq === 'function' && META[evt]) window.fbq(META[evt][0], META[evt][1], data || {});
+    if (typeof window.gtag === 'function' && GA[evt]) window.gtag('event', GA[evt], data || {});
   };
   const wppUrl = (msg) => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 
@@ -266,9 +272,27 @@ const CONFIG = {
     store.set('wppBubbleClosed', '1');
   });
 
+  /* ---------- Dados da empresa ---------- */
+  const company = [CONFIG.cnpj && `CNPJ ${CONFIG.cnpj}`, CONFIG.cadastur && `Cadastur ${CONFIG.cadastur}`].filter(Boolean).join(' · ');
+  if (company) {
+    $$('[data-company]').forEach((el) => { el.hidden = false; });
+    $$('[data-company-txt]').forEach((el) => { el.textContent = el.closest('.footer') ? `Aura Amazônia · ${company}` : company; });
+  }
+
   /* ---------- Formulários de lead ---------- */
   const utm = {};
   new URLSearchParams(location.search).forEach((v, k) => { if (/^utm_|^gclid$|^fbclid$/.test(k)) utm[k] = v; });
+  const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+
+  // grava (ou completa) o lead na planilha; a mesma id atualiza a mesma linha
+  const saveLead = (lead) => {
+    if (!CONFIG.leadEndpoint) return;
+    fetch(CONFIG.leadEndpoint, {
+      method: 'POST', mode: 'no-cors', keepalive: true,
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(Object.assign({ pagina: location.href }, utm, lead)),
+    }).catch(() => {});
+  };
 
   const maskPhone = (input) => {
     input.addEventListener('input', () => {
@@ -286,53 +310,117 @@ const CONFIG = {
     whatsapp: (v) => v.replace(/\D/g, '').length >= 10,
     email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
   };
-
-  $$('[data-lead-form]').forEach((form) => {
+  // valida os campos obrigatórios de um trecho do formulário; devolve o primeiro inválido
+  const validate = (scope) => {
+    let firstBad = null;
+    $$('input[required]', scope).forEach((inp) => {
+      const valid = (validators[inp.name] || ((v) => v.trim().length >= 2))(inp.value);
+      inp.closest('.field').classList.toggle('has-error', !valid);
+      if (!valid && !firstBad) firstBad = inp;
+    });
+    $$('[data-required-group]', scope).forEach((g) => {
+      const valid = !!$('input:checked', g);
+      g.classList.toggle('has-error', !valid);
+      if (!valid && !firstBad) firstBad = $('input', g);
+    });
+    if (firstBad) firstBad.focus();
+    return !firstBad;
+  };
+  const prepare = (form) => {
     $$('input[type="tel"]', form).forEach(maskPhone);
-    $$('input', form).forEach((inp) => inp.addEventListener('input', () => inp.closest('.field').classList.remove('has-error')));
+    $$('input', form).forEach((inp) => {
+      const clear = () => inp.closest('.field').classList.remove('has-error');
+      inp.addEventListener('input', clear);
+      inp.addEventListener('change', clear);
+    });
+  };
+  const finish = (form, url) => {
+    // abre o WhatsApp no mesmo gesto do clique (evita bloqueio de pop-up)
+    window.open(url, '_blank', 'noopener');
+    $$('[data-wpp-after]', form).forEach((a) => { a.href = url; });
+    store.set('leadSent', '1');
+    form.classList.add('is-sent');
+  };
 
+  /* Formulário principal, em 2 etapas */
+  const main = $('[data-lead-form="oferta"]');
+  if (main) {
+    prepare(main);
+    main.dataset.leadId = newId();
+    const step1 = $('[data-step="1"]', main), step2 = $('[data-step="2"]', main);
+    const label = $('[data-step-label]', main);
+    const go = (n) => {
+      step1.hidden = n !== 1; step2.hidden = n !== 2;
+      label.textContent = `Etapa ${n} de 2`;
+      const first = $(n === 1 ? 'input' : 'input:not([type=radio])', n === 1 ? step1 : step2);
+      if (first) first.focus({ preventScroll: true });
+    };
+    $('[data-step-back]', main).addEventListener('click', () => go(1));
+    main.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const data = Object.fromEntries(new FormData(main).entries());
+      if (!step1.hidden) {
+        if (!validate(step1)) return;
+        // etapa 1 concluída: o contato já fica salvo, mesmo que a pessoa desista depois
+        saveLead({ id: main.dataset.leadId, etapa: '1 · contato', formulario: 'oferta', nome: data.nome, email: data.email, whatsapp: data.whatsapp });
+        if (!main.dataset.started) { main.dataset.started = '1'; track('lead_iniciado', { origem: 'oferta' }); }
+        go(2);
+        return;
+      }
+      if (!validate(step2)) return;
+      // lead qualificado = pode viajar nas datas e o valor cabe no planejamento
+      const qualificado = data.disponibilidade === 'Sim' && data.investimento !== 'Não no momento';
+      saveLead({ id: main.dataset.leadId, etapa: '2 · completo', formulario: 'oferta', ...data, qualificado: qualificado ? 'sim' : 'não' });
+      track('lead', { origem: 'oferta', disponibilidade: data.disponibilidade, investimento: data.investimento, qualificado });
+      if (qualificado) track('lead_qualificado', { origem: 'oferta' });
+      finish(main, wppUrl([
+        `Olá! Sou ${data.nome} e quero garantir minha vaga no Tour Gastronômico de Maués (25 a 30/11).`,
+        `E-mail: ${data.email}`,
+        `Cidade: ${data.cidade}`,
+        `Disponibilidade de 25 a 30/11: ${data.disponibilidade}`,
+        `Investimento de R$ 11.999 no planejamento: ${data.investimento}`,
+        `WhatsApp: ${data.whatsapp}`,
+      ].join('\n')));
+    });
+  }
+
+  /* Formulário curto do topo: salva o contato e leva para a etapa seguinte do formulário principal */
+  const mini = $('[data-mini-form]');
+  if (mini && main) {
+    prepare(mini);
+    mini.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (!validate(mini)) return;
+      const data = Object.fromEntries(new FormData(mini).entries());
+      saveLead({ id: main.dataset.leadId, etapa: '1 · contato (topo)', formulario: 'topo', nome: data.nome, whatsapp: data.whatsapp });
+      if (!main.dataset.started) { main.dataset.started = '1'; track('lead_iniciado', { origem: 'topo' }); }
+      $('#f-nome', main).value = data.nome;
+      $('#f-wpp', main).value = data.whatsapp;
+      const offer = $('#vagas');
+      scrollTo({ top: main.getBoundingClientRect().top + scrollY - 140, behavior: 'smooth' });
+      setTimeout(() => $('#f-email', main).focus({ preventScroll: true }), 700);
+      if (offer) offer.classList.add('is-highlight');
+    });
+  }
+
+  /* Formulário do pop-up de saída */
+  $$('[data-lead-form="saida"]').forEach((form) => {
+    prepare(form);
+    const id = newId();
     form.addEventListener('submit', (ev) => {
       ev.preventDefault();
-      let ok = true, firstBad = null;
-      $$('input[required]', form).forEach((inp) => {
-        const valid = (validators[inp.name] || ((v) => v.trim() !== ''))(inp.value);
-        inp.closest('.field').classList.toggle('has-error', !valid);
-        if (!valid) { ok = false; firstBad = firstBad || inp; }
-      });
-      if (!ok) { firstBad.focus(); return; }
-
+      if (!validate(form)) return;
       const data = Object.fromEntries(new FormData(form).entries());
-      const origem = form.dataset.leadForm;
-      const lead = Object.assign({ origem, pagina: location.href, data: new Date().toISOString() }, data, utm);
-
-      const linhas = origem === 'saida'
-        ? [`Olá! Sou ${data.nome} e quero receber o roteiro completo do Tour Gastronômico de Maués (25 a 30/11).`]
-        : [
-          `Olá! Sou ${data.nome} e quero garantir minha vaga no Tour Gastronômico de Maués (25 a 30/11).`,
-          `Pessoas: ${data.pessoas === '1' ? 'só eu' : data.pessoas}`,
-          `E-mail: ${data.email}`,
-        ];
-      linhas.push(`WhatsApp: ${data.whatsapp}`);
-      const url = wppUrl(linhas.join('\n'));
-
-      // Abre o WhatsApp no mesmo gesto do clique (evita bloqueio de pop-up)
-      window.open(url, '_blank', 'noopener');
-      $$('[data-wpp-after]', form).forEach((a) => { a.href = url; });
-
-      if (CONFIG.leadEndpoint) {
-        fetch(CONFIG.leadEndpoint, {
-          method: 'POST', mode: 'no-cors', keepalive: true,
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(lead),
-        }).catch(() => {});
-      }
-      track('lead', { origem, pessoas: data.pessoas || '1' });
-      store.set('leadSent', '1');
-      form.classList.add('is-sent');
+      saveLead({ id, etapa: 'pop-up de saída', formulario: 'saida', nome: data.nome, whatsapp: data.whatsapp });
+      track('lead', { origem: 'saida' });
+      finish(form, wppUrl([
+        `Olá! Sou ${data.nome} e quero receber o roteiro completo do Tour Gastronômico de Maués (25 a 30/11).`,
+        `WhatsApp: ${data.whatsapp}`,
+      ].join('\n')));
     });
   });
 
-  /* ---------- Modal de intenção de saída (desktop) ---------- */
+  /* ---------- Pop-up de intenção de saída ---------- */
   const modal = $('[data-exit-modal]');
   let lastFocus = null;
   const openModal = () => {
@@ -351,10 +439,23 @@ const CONFIG = {
   $('[data-modal-close]').addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+  const armedAt = Date.now() + (matchMedia('(pointer: fine)').matches ? 12000 : 25000);
   if (matchMedia('(pointer: fine)').matches) {
-    const armedAt = Date.now() + 12000;
+    // computador: o mouse sai pela parte de cima da janela
     document.addEventListener('mouseout', (e) => {
       if (!e.relatedTarget && e.clientY <= 0 && Date.now() > armedAt) openModal();
     });
+  } else {
+    // celular: rolagem rápida para cima depois de ver boa parte da página
+    let lastY = scrollY, lastT = performance.now(), maxY = 0;
+    addEventListener('scroll', () => {
+      const y = scrollY, t = performance.now();
+      maxY = Math.max(maxY, y);
+      const speed = (lastY - y) / Math.max(1, t - lastT); // px/ms subindo
+      const seenEnough = maxY > document.documentElement.scrollHeight * 0.45;
+      const formInView = main && main.getBoundingClientRect().top < innerHeight && main.getBoundingClientRect().bottom > 0;
+      if (speed > 2.2 && seenEnough && !formInView && Date.now() > armedAt) openModal();
+      lastY = y; lastT = t;
+    }, { passive: true });
   }
 })();
